@@ -16,7 +16,7 @@
         }
         /* Custom shadows for the metric badges to simulate the mockup's visual lift */
         .metric-shadow {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 0 10px rgba(184, 134, 11, 0.4);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 0 10px rgba(212, 175, 55, 0.4);
         }
     </style>
     <script>
@@ -76,109 +76,73 @@
         </div>
     </header>
 
-    <!-- Main Content Area (Light Background) -->
-    <main class="bg-gray-100">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
-
-            <!-- Occasion Recommendations Section -->
-            <section class="mb-12">
-                <h2 class="text-2xl font-semibold mb-6 text-gray-800">Top Recommendations</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- Occasion Card 1: Diwali (Stronger shadow for lift) -->
-                    <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-card-gold text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-gold">
-                        <div class="flex flex-col items-center">
-                            <i data-lucide="sun" class="w-6 h-6 mb-1"></i>
-                            <span class="text-sm font-bold uppercase">Diwali Celebrations</span>
-                        </div>
-                    </a>
-                    <!-- Occasion Card 2: New Year -->
-                    <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-card-navy-light text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-navy-light">
-                        <div class="flex flex-col items-center">
-                            <i data-lucide="sparkles" class="w-6 h-6 mb-1"></i>
-                            <span class="text-sm font-bold uppercase">New Year, New Beginnings</span>
-                        </div>
-                    </a>
-                    <!-- Occasion Card 3: Corporate Year-End -->
-                    <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-card-green-dark text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-green-dark">
-                        <div class="flex flex-col items-center">
-                            <i data-lucide="trophy" class="w-6 h-6 mb-1"></i>
-                            <span class="text-sm font-bold uppercase">Corporate Year-End Gratitude</span>
-                        </div>
-                    </a>
-                    <!-- Occasion Card 4: Placeholder/Custom Card -->
-                    <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-gray-200 text-gray-700 transition transform hover:scale-[1.02] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                        <div class="flex flex-col items-center">
-                            <i data-lucide="plus" class="w-6 h-6 mb-1"></i>
-                            <span class="text-sm font-bold uppercase">View All Occasions</span>
-                        </div>
-                    </a>
-                </div>
-            </section>
-
-            <!-- Category Recommendation Cards -->
-            <section class="mb-12">
-                <h2 class="text-2xl font-semibold mb-6 text-gray-800">For Your Team</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- Category Card 1: Tech -->
-                    <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-blue-tech text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-blue-tech">
-                        <i data-lucide="laptop" class="w-8 h-8 mb-2"></i>
-                        <span class="text-center font-semibold text-sm">EXECUTIVE TECH</span>
-                    </a>
-                    <!-- Category Card 2: Eco -->
-                    <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-green-dark text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-green-dark">
-                        <i data-lucide="leaf" class="w-8 h-8 mb-2"></i>
-                        <span class="text-center font-semibold text-sm">ECO-FRIENDLY & SUSTAINABLE</span>
-                    </a>
-                    <!-- Category Card 3: Vouchers -->
-                    <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-navy-light text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-navy-light">
-                        <i data-lucide="ticket" class="w-8 h-8 mb-2"></i>
-                        <span class="text-center font-semibold text-sm">EXPERIENCES & VOUCHERS</span>
-                    </a>
-                    <!-- Category Card 4: Wellness -->
-                    <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-blue-tech text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-blue-tech">
-                        <i data-lucide="heart-handshake" class="w-8 h-8 mb-2"></i>
-                        <span class="text-center font-semibold text-sm">LIFESTYLE & WELLNESS</span>
-                    </a>
-                </div>
-            </section>
-
-            <!-- Feature Bar (Micro-Pillars of Trust) -->
-            <section class="mb-12">
-                <div class="flex justify-center flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-gray-600">
-                    <div class="flex items-center space-x-1">
-                        <i data-lucide="package" class="w-4 h-4 text-gw-gold"></i>
-                        <span class="hover:text-gw-dark transition">2-DAY METRO DELIVERY</span>
-                    </div>
-                    <div class="flex items-center space-x-1">
-                        <i data-lucide="link" class="w-4 h-4 text-gw-gold"></i>
-                        <span class="hover:text-gw-dark transition">RECIPIENT-CHOICE LINKS</span>
-                    </div>
-                    <div class="flex items-center space-x-1">
-                        <i data-lucide="file-text" class="w-4 h-4 text-gw-gold"></i>
-                        <span class="hover:text-gw-dark transition">GST-READY INVOICES</span>
-                    </div>
-                    <div class="flex items-center space-x-1">
-                        <i data-lucide="message-circle" class="w-4 h-4 text-gw-gold"></i>
-                        <span class="hover:text-gw-dark transition">WHATSAPP ORDERING</span>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Dark Section: Featured Products, AI & Metrics -->
+    <!-- Main Content Area -->
+    <main>
+        <!-- FIRST SECTION (Dark): AI Concierge, Build-A-Box & Metrics -->
         <div class="bg-gw-dark-secondary py-12">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- AI & Metrics Header -->
+                <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center pb-8">
+                    
+                    <!-- Conversational AI Search & Tags -->
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <!-- AI Concierge Icon -->
+                            <div class="w-10 h-10 rounded-full bg-pink-300 flex items-center justify-center shadow-lg">
+                                <i data-lucide="user" class="w-5 h-5 text-gw-dark"></i>
+                            </div>
+                            <h2 class="text-2xl text-white font-bold">Featured Kits: AI Gift Concierge</h2>
+                        </div>
+                        <p class="text-gw-text text-lg font-light">Conversational AI Search</p>
+                        
+                        <!-- Search Box (Gold accent, defined area) -->
+                        <div class="relative flex items-center border border-gw-gold rounded-xl p-1 bg-gw-dark">
+                            <input type="text" placeholder="Describe your perfect gift..." class="w-full bg-transparent text-gw-text p-3 pr-16 rounded-l-xl focus:outline-none placeholder-gray-500">
+                            <div class="w-12 h-12 bg-gw-gold rounded-lg flex items-center justify-center shadow-xl cursor-pointer hover:opacity-90 transition">
+                                <i data-lucide="bot" class="w-6 h-6 text-gw-dark"></i>
+                            </div>
+                        </div>
+
+                        <!-- Action Tags -->
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="text-xs font-medium text-gw-text bg-gw-dark px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">TEAM SIZE</span>
+                            <span class="text-xs font-medium text-gw-text bg-gw-dark px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">BUDGET</span>
+                            <span class="text-xs font-medium text-gw-text bg-gw-dark px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">VALUES</span>
+                            <span class="text-xs font-medium text-gw-text bg-gw-dark px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">TIMELINE</span>
+                        </div>
+                    </div>
+
+                    <!-- Metrics/Trust Badges -->
+                    <div class="lg:col-span-1 grid grid-cols-3 gap-3 lg:gap-4 text-center mt-6 lg:mt-0">
+                        <!-- Metric 1: Team Size -->
+                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
+                            <i data-lucide="handshake" class="w-8 h-8 text-gw-gold mb-1"></i>
+                            <span class="text-white text-xs font-semibold uppercase mt-2">Client Base</span>
+                        </div>
+                        <!-- Metric 2: CSAT -->
+                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
+                            <p class="text-2xl font-extrabold text-gw-gold">4.8/5</p>
+                            <span class="text-gw-text text-xs font-light uppercase">Client CSAT</span>
+                        </div>
+                        <!-- Metric 3: Delivery -->
+                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
+                            <p class="text-2xl font-extrabold text-gw-gold">98%</p>
+                            <span class="text-gw-text text-xs font-light uppercase">On-Time</span>
+                        </div>
+                    </div>
+                </section>
+                
                 <!-- Product Recommendations Based on Persona -->
-                <section class="mb-12 text-gw-text">
+                <section class="pt-8 border-t border-gray-700 mt-8 text-gw-text">
                     <p class="text-lg mb-8 font-light italic">
-                        Because <span class="text-gw-gold font-bold">Priya</span> loves coffee & plants under <span class="text-gw-gold font-bold">₹1,500</span>...
+                        Recommended "Build-a-Box" concepts based on common corporate profiles...
                     </p>
                     
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <!-- Product Cards with enhanced visuals -->
+                        <!-- Product Card 1 -->
                         <div class="text-center">
                             <div class="bg-gw-dark rounded-xl p-4 mb-3 h-40 flex items-center justify-center border-2 border-gw-gold/50 shadow-xl">
-                                <!-- Placeholder using a mix of icons to simulate box contents -->
                                 <i data-lucide="coffee" class="w-10 h-10 text-gw-gold absolute translate-x-3 -translate-y-3"></i>
                                 <i data-lucide="package-open" class="w-16 h-16 text-gw-text opacity-50"></i>
                             </div>
@@ -207,57 +171,96 @@
                         </div>
                     </div>
                 </section>
+            </div>
+        </div>
 
-                <!-- AI & Metrics -->
-                <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center pt-8 border-t border-gray-700">
-                    
-                    <!-- Conversational AI Search -->
-                    <div class="lg:col-span-2 space-y-4">
-                        <div class="flex items-center space-x-3">
-                            <!-- User/Avatar Icon -->
-                            <div class="w-10 h-10 rounded-full bg-pink-300 flex items-center justify-center shadow-lg">
-                                <i data-lucide="user" class="w-5 h-5 text-gw-dark"></i>
-                            </div>
-                            <h3 class="text-xl text-white font-semibold">Featured Kits: Perfect Gift</h3>
-                        </div>
-                        <p class="text-gw-text text-lg font-light">Conversational AI Search</p>
-                        
-                        <!-- Search Box (Gold accent, defined area) -->
-                        <div class="relative flex items-center border border-gw-gold rounded-xl p-1 bg-gw-dark">
-                            <input type="text" placeholder="Describe your perfect gift..." class="w-full bg-transparent text-gw-text p-3 pr-16 rounded-l-xl focus:outline-none placeholder-gray-500">
-                            <div class="w-12 h-12 bg-gw-gold rounded-lg flex items-center justify-center shadow-xl cursor-pointer hover:opacity-90 transition">
-                                <i data-lucide="bot" class="w-6 h-6 text-gw-dark"></i>
-                            </div>
-                        </div>
+        <!-- SECOND SECTION (Light): Occasions & Categories -->
+        <div class="bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-                        <!-- Action Tags -->
-                        <div class="flex flex-wrap gap-2 pt-2">
-                            <span class="text-xs font-medium text-gw-text bg-gw-dark px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">TEAM SIZE</span>
-                            <span class="text-xs font-medium text-gw-text bg-gw-dark px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">BUDGET</span>
-                            <span class="text-xs font-medium text-gw-text bg-gw-dark px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">VALUES</span>
-                            <span class="text-xs font-medium text-gw-text bg-gw-dark px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">TIMELINE</span>
+                <!-- Feature Bar (Micro-Pillars of Trust) - Moved up for immediate trust/service messaging -->
+                <section class="mb-12">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800 text-center">Core Service Pillars</h3>
+                    <div class="flex justify-center flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-gray-600">
+                        <div class="flex items-center space-x-1">
+                            <i data-lucide="package" class="w-4 h-4 text-gw-gold"></i>
+                            <span class="hover:text-gw-dark transition">2-DAY METRO DELIVERY</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i data-lucide="link" class="w-4 h-4 text-gw-gold"></i>
+                            <span class="hover:text-gw-dark transition">RECIPIENT-CHOICE LINKS</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i data-lucide="file-text" class="w-4 h-4 text-gw-gold"></i>
+                            <span class="hover:text-gw-dark transition">GST-READY INVOICES</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i data-lucide="message-circle" class="w-4 h-4 text-gw-gold"></i>
+                            <span class="hover:text-gw-dark transition">WHATSAPP ORDERING</span>
                         </div>
                     </div>
-
-                    <!-- Metrics/Trust Badges (Refined visual style to match mockup) -->
-                    <div class="lg:col-span-1 grid grid-cols-3 gap-3 lg:gap-4 text-center mt-6 lg:mt-0">
-                        <!-- Metric 1: Team Size -->
-                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
-                            <i data-lucide="handshake" class="w-8 h-8 text-gw-gold mb-1"></i>
-                            <span class="text-white text-xs font-semibold uppercase mt-2">Client Base</span>
-                        </div>
-                        <!-- Metric 2: CSAT -->
-                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
-                            <p class="text-2xl font-extrabold text-gw-gold">4.8/5</p>
-                            <span class="text-gw-text text-xs font-light uppercase">Client CSAT</span>
-                        </div>
-                        <!-- Metric 3: Delivery -->
-                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
-                            <p class="text-2xl font-extrabold text-gw-gold">98%</p>
-                            <span class="text-gw-text text-xs font-light uppercase">On-Time</span>
-                        </div>
+                </section>
+                
+                <!-- Occasion Recommendations Section -->
+                <section class="mb-12">
+                    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Shop by Occasion</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- Occasion Card 1: Diwali (Stronger shadow for lift) -->
+                        <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-card-gold text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-gold">
+                            <div class="flex flex-col items-center">
+                                <i data-lucide="sun" class="w-6 h-6 mb-1"></i>
+                                <span class="text-sm font-bold uppercase">Diwali Celebrations</span>
+                            </div>
+                        </a>
+                        <!-- Occasion Card 2: New Year -->
+                        <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-card-navy-light text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-navy-light">
+                            <div class="flex flex-col items-center">
+                                <i data-lucide="sparkles" class="w-6 h-6 mb-1"></i>
+                                <span class="text-sm font-bold uppercase">New Year, New Beginnings</span>
+                            </div>
+                        </a>
+                        <!-- Occasion Card 3: Corporate Year-End -->
+                        <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-card-green-dark text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-green-dark">
+                            <div class="flex flex-col items-center">
+                                <i data-lucide="trophy" class="w-6 h-6 mb-1"></i>
+                                <span class="text-sm font-bold uppercase">Corporate Year-End Gratitude</span>
+                            </div>
+                        </a>
+                        <!-- Occasion Card 4: Placeholder/Custom Card -->
+                        <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-gray-200 text-gray-700 transition transform hover:scale-[1.02] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            <div class="flex flex-col items-center">
+                                <i data-lucide="plus" class="w-6 h-6 mb-1"></i>
+                                <span class="text-sm font-bold uppercase">View All Occasions</span>
+                            </div>
+                        </a>
                     </div>
+                </section>
 
+                <!-- Category Recommendation Cards -->
+                <section class="mb-12">
+                    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Shop by Category</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- Category Card 1: Tech -->
+                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-blue-tech text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-blue-tech">
+                            <i data-lucide="laptop" class="w-8 h-8 mb-2"></i>
+                            <span class="text-center font-semibold text-sm">EXECUTIVE TECH</span>
+                        </a>
+                        <!-- Category Card 2: Eco -->
+                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-green-dark text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-green-dark">
+                            <i data-lucide="leaf" class="w-8 h-8 mb-2"></i>
+                            <span class="text-center font-semibold text-sm">ECO-FRIENDLY & SUSTAINABLE</span>
+                        </a>
+                        <!-- Category Card 3: Vouchers -->
+                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-navy-light text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-navy-light">
+                            <i data-lucide="ticket" class="w-8 h-8 mb-2"></i>
+                            <span class="text-center font-semibold text-sm">EXPERIENCES & VOUCHERS</span>
+                        </a>
+                        <!-- Category Card 4: Wellness -->
+                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-blue-tech text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-blue-tech">
+                            <i data-lucide="heart-handshake" class="w-8 h-8 mb-2"></i>
+                            <span class="text-center font-semibold text-sm">LIFESTYLE & WELLNESS</span>
+                        </a>
+                    </div>
                 </section>
             </div>
         </div>
