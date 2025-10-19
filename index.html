@@ -32,46 +32,15 @@
             transform: translateY(-2px);
         }
         
-        /* CSS for the Bot Pulse Animation */
-        @keyframes pulse-gold {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
-            }
-            50% {
-                transform: scale(1.03);
-                box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
-            }
-        }
-
-        .bot-pulse-ring {
-            animation: pulse-gold 2s infinite;
-        }
-
-        /* Enhanced AI Graphic background */
-        .ai-graphic-bg {
-            /* Subtle texture and deep gradient for a tech/luxury feel */
-            background: linear-gradient(135deg, rgba(36, 52, 68, 1) 0%, rgba(26, 44, 56, 1) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        .ai-graphic-bg::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
+        /* CSS for the Bot Pulse Animation - REMOVED */
+        
+        /* Enhanced AI Graphic background - REMOVED */
         
         /* Specific styling for the new gift cards */
         .gift-card {
             background-color: #1A2C38; /* gw-dark-secondary */
             color: #E5E7EB; /* gw-text */
-            position: relative; /* Needed for absolute price tag */
+            position: relative; 
             overflow: hidden;
         }
         
@@ -100,9 +69,8 @@
             font-weight: 700; 
             color: white;
             line-height: 1.25;
-            /* Removed truncate and adjusted padding for better text visibility */
             padding-bottom: 0; 
-            text-align: center; /* Center align for consistency */
+            text-align: center; 
         }
         
     </style>
@@ -135,15 +103,6 @@
         // --- JAVASCRIPT FOR DYNAMIC INTERACTION (MOCK) ---
         
         const fallbackImage = "https://placehold.co/180x180/1A2C38/D4AF37?text=Gift+Box"; 
-        
-        // Data structure for initial cards, now including mock price range
-        // This is only used for reference in the JS functions now.
-        const initialSampleGifts = [
-            { id: 1, name: "Tech Essentials Kit", description: "Smart & practical for engineers", image: "https://images.unsplash.com/photo-1542435503-921473aa8b7a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", price: "₹4,900 - 5,500" },
-            { id: 2, name: "Desk Zen Set", description: "Minimalist & calming workspace", image: "https://images.unsplash.com/photo-1577977465355-6b5c3d2f928a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", price: "₹3,500 - 4,200" },
-            { id: 3, name: "Travel Smart Pack", description: "Perfect for teams on the go", image: "https://images.unsplash.com/photo-1587327429158-b7a42a344933?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", price: "₹5,100 - 5,800" },
-            { id: 4, name: "Coffee & Code Box", description: "Fuel productivity", image: "https://images.unsplash.com/photo-1517402685651-7f97b7b15a6b?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", price: "₹4,500 - 5,100" },
-        ];
         
         // Dynamic placeholder cycle logic
         const placeholders = [
@@ -241,9 +200,9 @@
                 { id: 8, name: "Artisanal Snack Box", image: `https://images.unsplash.com/photo-1601675760548-b2a3b98453cc?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
             ];
 
-            // NOTE: Changed from md:grid-cols-4 to grid-cols-2 to fit better in the new 50% column width
+            // Reverted to 4 columns to fill the full container width nicely
             return `
-                <div id="ai-results-grid" class="grid grid-cols-2 gap-4 md:gap-6 pb-4 pt-2 fade-in-results">
+                <div id="ai-results-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pb-4 pt-2 fade-in-results">
                     ${dynamicResults.map(gift => `
                         <div 
                             class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70"
@@ -404,129 +363,103 @@
         <div id="ai-concierge-section" class="bg-gw-dark-secondary py-12 md:py-16">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <!-- NOTE: Changed to lg:grid-cols-2 for a symmetrical 50/50 layout on large screens -->
-                <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <!-- NEW LAYOUT: Single Full-Width Column (resolved alignment issue) -->
+                <section class="space-y-6">
                     
-                    <!-- Left Column: AI Chat and Results (Combined Interface) -->
-                    <!-- NOTE: Removed lg:col-span-2, now takes 50% width -->
-                    <div class="space-y-6">
+                    <!-- 1. Hero Text -->
+                    <div class="text-left mb-4">
+                        <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-3 tracking-tight">
+                            The Future of Gifting: <span class="text-gw-gold">AI-Powered Curation.</span>
+                        </h2>
+                        <p class="text-gw-text text-lg font-light max-w-xl">
+                            Describe your goals, and we'll instantly generate custom, buildable gift boxes to match.
+                        </p>
+                    </div>
+
+                    <!-- 2. Trust Metrics (Now placed directly under Hero text) -->
+                    <div class="grid grid-cols-3 gap-3 w-full max-w-lg mb-6">
                         
-                        <!-- Hero Text -->
-                        <div class="text-left mb-4">
-                            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-3 tracking-tight">
-                                The Future of Gifting: <span class="text-gw-gold">AI-Powered Curation.</span>
-                            </h2>
-                            <p class="text-gw-text text-lg font-light max-w-xl">
-                                Describe your goals, and we'll instantly generate custom, buildable gift boxes to match.
-                            </p>
+                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
+                            <i data-lucide="handshake" class="w-7 h-7 md:w-8 md:h-8 text-gw-gold mb-1"></i>
+                            <span class="text-gw-text text-xs font-semibold uppercase mt-1 text-center">Client Base</span>
                         </div>
-
-                        <!-- AI Results Container (Static/Dynamic Results) -->
-                        <div id="ai-results-container" class="transition duration-500 ease-in-out">
-                            <!-- HARD-CODED INITIAL SAMPLES -->
-                            <!-- NOTE: Changed from md:grid-cols-4 to grid-cols-2 to fit the narrower 50% column gracefully -->
-                            <div id="ai-results-grid-initial" class="grid grid-cols-2 gap-4 md:gap-6 pb-4 pt-2">
-                                
-                                <!-- Card 1: Tech Essentials Kit (Gold background) -->
-                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Tech Essentials Kit')" tabindex="0" role="button" aria-label="Select Tech Essentials Kit">
-                                    <img src="https://images.unsplash.com/photo-1542435503-921473aa8b7a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tech Essentials Kit" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/1A2C38/D4AF37?text=Tech+Kit';">
-                                    <p class="gift-card-title text-sm md:text-base text-center">Tech Essentials Kit</p>
-                                    <!-- Price tag removed -->
-                                </div>
-                                
-                                <!-- Card 2: Desk Zen Set -->
-                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Desk Zen Set')" tabindex="0" role="button" aria-label="Select Desk Zen Set">
-                                    <img src="https://images.unsplash.com/photo-1577977465355-6b5c3d2f928a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Desk Zen Set" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/3A4B62/D4AF37?text=Desk+Zen';">
-                                    <p class="gift-card-title text-sm md:text-base text-center">Desk Zen Set</p>
-                                    <!-- Price tag removed -->
-                                </div>
-                                
-                                <!-- Card 3: Travel Smart Pack -->
-                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Travel Smart Pack')" tabindex="0" role="button" aria-label="Select Travel Smart Pack">
-                                    <img src="https://images.unsplash.com/photo-1587327429158-b7a42a344933?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Travel Smart Pack" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/5C7A5C/D4AF37?text=Travel+Pack';">
-                                    <p class="gift-card-title text-sm md:text-base text-center">Travel Smart Pack</p>
-                                    <!-- Price tag removed -->
-                                </div>
-                                
-                                <!-- Card 4: Coffee & Code Box -->
-                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Coffee & Code Box')" tabindex="0" role="button" aria-label="Select Coffee & Code Box">
-                                    <img src="https://images.unsplash.com/photo-1517402685651-7f97b7b15a6b?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Coffee & Code Box" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/A77F3C/D4AF37?text=Coffee+Code';">
-                                    <p class="gift-card-title text-sm md:text-base text-center">Coffee & Code Box</p>
-                                    <!-- Price tag removed -->
-                                </div>
-                            </div>
-                            <!-- END HARD-CODED INITIAL SAMPLES -->
+                        
+                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
+                            <p class="text-2xl font-extrabold text-gw-gold">4.8/5</p>
+                            <span class="text-gw-text text-xs font-light uppercase text-center">Client CSAT</span>
                         </div>
-
-                        <!-- Chat Interface (Seamlessly attached below results) -->
-                        <div class="bg-gw-dark rounded-xl shadow-ai-chat space-y-4 p-4 md:p-6 border border-gw-gold/20">
-                            
-                            <!-- Static Greeting Header -->
-                            <p id="static-greeting-text" class="text-gw-text text-sm font-light leading-relaxed">
-                                Hi! Let's get started. **Just type in your gifting needs below to see instant results.**
-                            </p>
-
-                            <!-- Chat History Area (Only for dynamic messages) -->
-                            <div id="chat-history" class="h-16 overflow-y-auto pr-2" style="scrollbar-width: none; -ms-overflow-style: none;" aria-live="polite">
-                                <!-- Dynamic user/AI messages will appear here -->
-                            </div>
-
-                            <!-- Input and Button -->
-                            <div class="flex items-center space-x-2">
-                                <!-- Dynamic Placeholder logic is now controlled by JS function -->
-                                <input type="text" id="chat-input" placeholder="Loading AI suggestions..." class="w-full bg-gw-dark-secondary text-gw-text p-3 rounded-lg focus:outline-none placeholder-gray-500 text-sm border border-gw-dark-secondary focus:border-gw-gold transition" aria-label="AI Concierge Input">
-                                <button id="curate-button" class="bg-gw-gold text-gw-dark px-4 py-3 text-sm font-bold rounded-lg shadow-lg hover:bg-opacity-90 transition duration-300 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold" aria-label="Curate gifts based on input">
-                                    Curate
-                                </button>
-                            </div>
-                            
-                            <!-- Action Tags -->
-                            <div class="flex flex-wrap gap-2 pt-1">
-                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'My team size is 50 employees'">TEAM SIZE (50+)</span>
-                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'Budget is ₹15,000 per person'">BUDGET (₹15k)</span>
-                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'Focus on sustainable and green products'">SUSTAINABLE</span>
-                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'Need delivery by next month'">TIMELINE</span>
-                            </div>
+                        
+                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
+                            <p class="text-2xl font-extrabold text-gw-gold">98%</p>
+                            <span class="text-gw-text text-xs font-light uppercase text-center">On-Time</span>
                         </div>
                     </div>
 
-                    <!-- Right Column: Metrics and Visual -->
-                    <!-- NOTE: Removed lg:col-span-1, now takes 50% width -->
-                    <div class="flex flex-col items-center justify-start gap-8 mt-6 lg:mt-0">
-                        
-                        <!-- Trust Metrics (Unchanged) -->
-                        <!-- Metrics now occupy 1/2 the screen width, improving visibility -->
-                        <div class="grid grid-cols-3 gap-3 w-full">
+
+                    <!-- 3. AI Results Container (Static/Dynamic Results) -->
+                    <div id="ai-results-container" class="transition duration-500 ease-in-out">
+                        <!-- HARD-CODED INITIAL SAMPLES -->
+                        <div id="ai-results-grid-initial" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pb-4 pt-2">
                             
-                            <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
-                                <i data-lucide="handshake" class="w-7 h-7 md:w-8 md:h-8 text-gw-gold mb-1"></i>
-                                <span class="text-gw-text text-xs font-semibold uppercase mt-1 text-center">Client Base</span>
+                            <!-- Card 1: Tech Essentials Kit (Gold background) -->
+                            <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Tech Essentials Kit')" tabindex="0" role="button" aria-label="Select Tech Essentials Kit">
+                                <img src="https://images.unsplash.com/photo-1542435503-921473aa8b7a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tech Essentials Kit" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/1A2C38/D4AF37?text=Tech+Kit';">
+                                <p class="gift-card-title text-sm md:text-base text-center">Tech Essentials Kit</p>
                             </div>
                             
-                            <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
-                                <p class="text-2xl font-extrabold text-gw-gold">4.8/5</p>
-                                <span class="text-gw-text text-xs font-light uppercase text-center">Client CSAT</span>
+                            <!-- Card 2: Desk Zen Set -->
+                            <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Desk Zen Set')" tabindex="0" role="button" aria-label="Select Desk Zen Set">
+                                <img src="https://images.unsplash.com/photo-1577977465355-6b5c3d2f928a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Desk Zen Set" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/3A4B62/D4AF37?text=Desk+Zen';">
+                                <p class="gift-card-title text-sm md:text-base text-center">Desk Zen Set</p>
                             </div>
                             
-                            <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
-                                <p class="text-2xl font-extrabold text-gw-gold">98%</p>
-                                <span class="text-gw-text text-xs font-light uppercase text-center">On-Time</span>
+                            <!-- Card 3: Travel Smart Pack -->
+                            <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Travel Smart Pack')" tabindex="0" role="button" aria-label="Select Travel Smart Pack">
+                                <img src="https://images.unsplash.com/photo-1587327429158-b7a42a344933?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Travel Smart Pack" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/5C7A5C/D4AF37?text=Travel+Pack';">
+                                <p class="gift-card-title text-sm md:text-base text-center">Travel Smart Pack</p>
+                            </div>
+                            
+                            <!-- Card 4: Coffee & Code Box -->
+                            <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Coffee & Code Box')" tabindex="0" role="button" aria-label="Select Coffee & Code Box">
+                                <img src="https://images.unsplash.com/photo-1517402685651-7f97b7b15a6b?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Coffee & Code Box" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/A77F3C/D4AF37?text=Coffee+Code';">
+                                <p class="gift-card-title text-sm md:text-base text-center">Coffee & Code Box</p>
                             </div>
                         </div>
+                        <!-- END HARD-CODED INITIAL SAMPLES -->
+                    </div>
 
-                        <!-- AI Graphic (Unchanged) -->
-                        <div class="w-full h-64 md:h-80 ai-graphic-bg rounded-xl flex items-center justify-center shadow-2xl border border-gw-gold/50 bot-pulse-ring">
-                            <div class="relative flex items-center justify-center">
-                                <!-- Main Box Icon -->
-                                <i data-lucide="package-search" class="w-20 h-20 text-gw-gold opacity-80"></i>
-                                <!-- Sparkle Icons for the AI effect -->
-                                <i data-lucide="sparkles" class="w-10 h-10 text-white absolute -top-4 -right-2 animate-pulse" style="animation-delay: 0.5s;"></i>
-                                <i data-lucide="zap" class="w-6 h-6 text-gw-gold absolute bottom-2 left-0 animate-pulse" style="animation-delay: 1s;"></i>
-                            </div>
-                            <p class="absolute bottom-4 text-xs font-light text-gw-text/70">Intelligent Gift Matching</p>
+                    <!-- 4. Chat Interface (Now spans full width, aligning with cards above) -->
+                    <div class="bg-gw-dark rounded-xl shadow-ai-chat space-y-4 p-4 md:p-6 border border-gw-gold/20">
+                        
+                        <!-- Static Greeting Header -->
+                        <p id="static-greeting-text" class="text-gw-text text-sm font-light leading-relaxed">
+                            Hi! Let's get started. **Just type in your gifting needs below to see instant results.**
+                        </p>
+
+                        <!-- Chat History Area (Only for dynamic messages) -->
+                        <div id="chat-history" class="h-16 overflow-y-auto pr-2" style="scrollbar-width: none; -ms-overflow-style: none;" aria-live="polite">
+                            <!-- Dynamic user/AI messages will appear here -->
+                        </div>
+
+                        <!-- Input and Button -->
+                        <div class="flex items-center space-x-2">
+                            <!-- Dynamic Placeholder logic is now controlled by JS function -->
+                            <input type="text" id="chat-input" placeholder="Loading AI suggestions..." class="w-full bg-gw-dark-secondary text-gw-text p-3 rounded-lg focus:outline-none placeholder-gray-500 text-sm border border-gw-dark-secondary focus:border-gw-gold transition" aria-label="AI Concierge Input">
+                            <button id="curate-button" class="bg-gw-gold text-gw-dark px-4 py-3 text-sm font-bold rounded-lg shadow-lg hover:bg-opacity-90 transition duration-300 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold" aria-label="Curate gifts based on input">
+                                Curate
+                            </button>
+                        </div>
+                        
+                        <!-- Action Tags -->
+                        <div class="flex flex-wrap gap-2 pt-1">
+                            <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'My team size is 50 employees'">TEAM SIZE (50+)</span>
+                            <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'Budget is ₹15,000 per person'">BUDGET (₹15k)</span>
+                            <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'Focus on sustainable and green products'">SUSTAINABLE</span>
+                            <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'Need delivery by next month'">TIMELINE</span>
                         </div>
                     </div>
                 </section>
+                <!-- END NEW LAYOUT -->
             </div>
         </div>
         
