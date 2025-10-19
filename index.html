@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GiftWell - Corporate Gifting Platform</title>
+    <title>GiftWell - AI Corporate Gifting Platform</title>
     
     <!-- Load Inter Font & Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,6 +15,7 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8f8f8;
             min-height: 100vh;
+            scroll-behavior: smooth; /* Smooth scrolling for the anchor link */
         }
         
         /* Custom scrollbar for the chat history (for non-Firefox browsers) */
@@ -47,7 +48,7 @@
             animation: pulse-gold 2s infinite;
         }
 
-        /* NEW: Enhanced AI Graphic background */
+        /* Enhanced AI Graphic background */
         .ai-graphic-bg {
             /* Subtle texture and deep gradient for a tech/luxury feel */
             background: linear-gradient(135deg, rgba(36, 52, 68, 1) 0%, rgba(26, 44, 56, 1) 100%);
@@ -68,11 +69,18 @@
         
         /* Specific styling for the new gift cards */
         .gift-card {
-            background-color: #1A2C38; /* gw-dark-secondary, which is the chat background color */
+            background-color: #1A2C38; /* gw-dark-secondary */
             color: #E5E7EB; /* gw-text */
+            position: relative; /* Needed for absolute price tag */
+            overflow: hidden;
         }
         
-        /* New: Animation classes for seamless transition */
+        /* Price Tag Style (Hidden now as per request, but keeping rule for reference) */
+        .price-tag {
+            display: none; /* Hide the price tag */
+        }
+        
+        /* Animation classes for seamless transition */
         .fade-in-results {
             animation: fadeIn 0.5s ease-out;
         }
@@ -89,15 +97,17 @@
         }
 
         .gift-card-title {
-            font-weight: 700; /* bold */
+            font-weight: 700; 
             color: white;
             line-height: 1.25;
-            margin-bottom: 4px;
+            /* Removed truncate and adjusted padding for better text visibility */
+            padding-bottom: 0; 
+            text-align: center; /* Center align for consistency */
         }
         
         .gift-card-desc {
-            font-size: 0.875rem; /* text-sm */
-            color: #9CA3AF; /* gray-400 */
+            font-size: 0.875rem; 
+            color: #9CA3AF; 
         }
     </style>
     <script>
@@ -106,10 +116,10 @@
             theme: {
                 extend: {
                     colors: {
-                        'gw-dark': '#2E3D4D', /* Slightly lighter dark for contrast */
-                        'gw-dark-secondary': '#1A2C38', /* Deeper dark for the main AI section */
-                        'gw-darker-footer': '#12202A', /* Darkest for the footer */
-                        'gw-gold': '#D4AF37', /* Rich gold primary color */
+                        'gw-dark': '#2E3D4D', 
+                        'gw-dark-secondary': '#1A2C38', 
+                        'gw-darker-footer': '#12202A', 
+                        'gw-gold': '#D4AF37', 
                         'gw-text': '#E5E7EB',
                         
                         /* Occasion/Category Cards Colors */
@@ -128,20 +138,68 @@
         
         // --- JAVASCRIPT FOR DYNAMIC INTERACTION (MOCK) ---
         
-        // Initial set of gifts displayed statically before search
-        const initialSampleGifts = [
-            { id: 1, name: "Tech Essentials Kit", description: "Smart & practical for engineers", image: "https://images.unsplash.com/photo-1542435503-921473aa8b7a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-            { id: 2, name: "Desk Zen Set", description: "Minimalist & calming workspace", image: "https://images.unsplash.com/photo-1577977465355-6b5c3d2f928a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-            { id: 3, name: "Travel Smart Pack", description: "Perfect for teams on the go", image: "https://images.unsplash.com/photo-1587327429158-b7a42a344933?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-            { id: 4, name: "Coffee & Code Box", description: "Fuel productivity", image: "https://images.unsplash.com/photo-1517402685651-7f97b7b15a6b?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-        ];
-
-        // Fallback image in case the remote service is blocked or fails
         const fallbackImage = "https://placehold.co/180x180/1A2C38/D4AF37?text=Gift+Box"; 
+        
+        // Data structure for initial cards, now including mock price range
+        // This is only used for reference in the JS functions now.
+        const initialSampleGifts = [
+            { id: 1, name: "Tech Essentials Kit", description: "Smart & practical for engineers", image: "https://images.unsplash.com/photo-1542435503-921473aa8b7a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", price: "₹4,900 - 5,500" },
+            { id: 2, name: "Desk Zen Set", description: "Minimalist & calming workspace", image: "https://images.unsplash.com/photo-1577977465355-6b5c3d2f928a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", price: "₹3,500 - 4,200" },
+            { id: 3, name: "Travel Smart Pack", description: "Perfect for teams on the go", image: "https://images.unsplash.com/photo-1587327429158-b7a42a344933?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", price: "₹5,100 - 5,800" },
+            { id: 4, name: "Coffee & Code Box", description: "Fuel productivity", image: "https://images.unsplash.com/photo-1517402685651-7f97b7b15a6b?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", price: "₹4,500 - 5,100" },
+        ];
+        
+        // Dynamic placeholder cycle logic
+        const placeholders = [
+            "Gifts for 10 engineers, ₹5,000 budget, tech theme",
+            "Client appreciation gifts for 20 VPs, luxury theme",
+            "New hire kits for 50 remote sales staff, WFH comfort theme",
+            "Holiday gifts for 100 global employees, sustainable focus",
+        ];
+        let placeholderIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typingSpeed = 75; // Typing speed (ms)
+        let delayBeforeDelete = 1500; // Pause at end (ms)
 
+        function startDynamicPlaceholder() {
+            const chatInput = document.getElementById('chat-input');
+            if (!chatInput || chatInput.placeholder.includes("Customizing")) {
+                // Stop if the user has started a customization thread
+                return;
+            }
+
+            const currentText = placeholders[placeholderIndex];
+            
+            if (!isDeleting) {
+                // Typing
+                chatInput.placeholder = currentText.substring(0, charIndex + 1);
+                charIndex++;
+
+                if (charIndex === currentText.length) {
+                    isDeleting = true;
+                    typingSpeed = 50; // Pause before deleting
+                    setTimeout(() => requestAnimationFrame(startDynamicPlaceholder), delayBeforeDelete);
+                    return;
+                }
+            } else {
+                // Deleting
+                chatInput.placeholder = currentText.substring(0, charIndex - 1);
+                charIndex--;
+
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+                    typingSpeed = 75; // Resume typing speed
+                }
+            }
+
+            const speed = isDeleting ? 30 : typingSpeed; 
+            setTimeout(() => requestAnimationFrame(startDynamicPlaceholder), speed);
+        }
 
         /**
-         * Simulates selecting a gift option.
+         * Simulates selecting a gift option and updates mock metrics.
          * @param {string} name - The name of the selected gift.
          */
         function selectGiftOption(name) {
@@ -150,6 +208,9 @@
             
             chatInput.value = ""; 
             chatInput.placeholder = `Customizing "${name}". Enter details (e.g., 'add logo, change color to black').`;
+
+            // Hide initial results grid
+            document.getElementById('ai-results-container').innerHTML = '';
 
             // Add the selection confirmation to history
             const userPart = document.createElement('div');
@@ -174,13 +235,19 @@
 
         /**
          * Generates the HTML for the search results cards.
-         * @param {Array<Object>} gifts - Array of gift objects.
-         * @returns {string} HTML string of the result cards.
+         * @returns {string} HTML string of the result cards (using mock data).
          */
-        function generateResultCards(gifts) {
+        function generateResultCards() {
+            const dynamicResults = [
+                { id: 5, name: "Luxury Wellness Kit", image: `https://images.unsplash.com/photo-1628186178822-488b39910d5b?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
+                { id: 6, name: "Minimalist Desk Bundle", image: `https://images.unsplash.com/photo-1541701494587-c531d02c8969?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
+                { id: 7, name: "Premium Audio Gear", image: `https://images.unsplash.com/photo-1505740420928-5e560c0670e2?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
+                { id: 8, name: "Artisanal Snack Box", image: `https://images.unsplash.com/photo-1601675760548-b2a3b98453cc?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
+            ];
+
             return `
                 <div id="ai-results-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pb-4 pt-2 fade-in-results">
-                    ${gifts.map(gift => `
+                    ${dynamicResults.map(gift => `
                         <div 
                             class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70"
                             onclick="selectGiftOption('${gift.name}')"
@@ -189,9 +256,9 @@
                             role="button"
                             aria-label="Select ${gift.name}"
                         >
-                            <img src="${gift.image}" alt="${gift.name}" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-dark-secondary/50" onerror="this.onerror=null; this.src='${fallbackImage}';">
-                            <p class="gift-card-title text-sm md:text-base text-center truncate">${gift.name}</p>
-                            <!-- Description intentionally omitted for tight dynamic display -->
+                            <img src="${gift.image}" alt="${gift.name}" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='${fallbackImage}';">
+                            <p class="gift-card-title text-sm md:text-base text-center">${gift.name}</p>
+                            <!-- <span class="price-tag">Removed</span> -->
                         </div>
                     `).join('')}
                 </div>
@@ -206,20 +273,24 @@
             const chatHistory = document.getElementById('chat-history');
             const aiResultsContainer = document.getElementById('ai-results-container');
             const chatInput = document.getElementById('chat-input');
-
+            
             // Check if user is trying to customize an existing item (simple mock state)
             const customizing = chatInput.placeholder.includes('Customizing');
             
             // 1. Add user query to history
             const userPart = document.createElement('div');
             userPart.className = 'text-right mb-4';
-            userPart.innerHTML = `<span class="inline-block bg-gw-dark px-4 py-2 text-gw-text rounded-xl rounded-br-none shadow-lg max-w-[80%]">${query}</span>`;
+            userPart.innerHTML = `<span class="inline-block bg-gw-gold text-gw-dark px-4 py-2 rounded-xl rounded-br-none shadow-lg max-w-[80%]">${query}</span>`;
             chatHistory.appendChild(userPart);
 
             // 2. Clear input and show loading
             chatInput.value = '';
             
             if (!customizing) {
+                // Hide initial cards
+                const initialGrid = document.getElementById('ai-results-grid-initial');
+                if (initialGrid) initialGrid.classList.add('hidden');
+
                 // Show loading for new search
                 aiResultsContainer.innerHTML = `
                     <div class="py-8 flex justify-center items-center text-gw-gold">
@@ -234,25 +305,22 @@
             
             chatHistory.scrollTop = chatHistory.scrollHeight;
 
-            // 3. Simulate API delay and show results/response (Using distinct, high-quality mock images)
+            // 3. Simulate API delay and show results/response 
             setTimeout(() => {
                 if (customizing) {
                     // Customization response
                     const aiPart = document.createElement('div');
                     aiPart.className = 'text-left mb-4';
-                    aiPart.innerHTML = `<span class="inline-block bg-gw-dark text-gw-text px-4 py-2 rounded-xl rounded-tl-none shadow-lg max-w-[80%]">Understood. I've updated the quote for your custom item. Ready to proceed to bulk ordering?</span>`;
+                    aiPart.innerHTML = `<span class="inline-block bg-gw-dark text-gw-text px-4 py-2 rounded-xl rounded-tl-none shadow-lg max-w-[80%]">Understood. Your custom item is ready. Ready to proceed to bulk ordering?</span>`;
                     chatHistory.appendChild(aiPart);
                     chatInput.placeholder = 'Ready for bulk order or need further assistance?';
+
+                    // Clear results container after customization
+                    aiResultsContainer.innerHTML = '';
                 } else {
-                    // New search results response (using mock data with clear images)
-                    const newResults = [
-                        { id: 5, name: "Luxury Wellness Kit", image: `https://images.unsplash.com/photo-1628186178822-488b39910d5b?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
-                        { id: 6, name: "Minimalist Desk Bundle", image: `https://images.unsplash.com/photo-1541701494587-c531d02c8969?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
-                        { id: 7, name: "Premium Audio Gear", image: `https://images.unsplash.com/photo-1505740420928-5e560c0670e2?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
-                        { id: 8, name: "Artisanal Snack Box", image: `https://images.unsplash.com/photo-1601675760548-b2a3b98453cc?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
-                    ];
+                    // New search results response 
                     
-                    aiResultsContainer.innerHTML = generateResultCards(newResults);
+                    aiResultsContainer.innerHTML = generateResultCards();
                     
                     // Add AI response to history
                     const aiPart = document.createElement('div');
@@ -261,7 +329,7 @@
                     chatHistory.appendChild(aiPart);
                     
                     // Reset placeholder for next search
-                    chatInput.placeholder = "Gifts for 10 engineers, ₹5,000 budget, tech theme";
+                    chatInput.placeholder = placeholders[placeholderIndex];
                 }
                 
                 chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -289,8 +357,8 @@
                 curateButton.addEventListener('click', submitQuery);
             }
             if (chatInput) {
-                // Set the initial placeholder text
-                chatInput.placeholder = "Gifts for 10 engineers, ₹5,000 budget, tech theme";
+                // START THE DYNAMIC PLACEHOLDER
+                startDynamicPlaceholder();
 
                 chatInput.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
@@ -336,7 +404,7 @@
 
     <main class="flex-grow">
         <!-- AI Concierge and Results Section (The Core Feature) -->
-        <div class="bg-gw-dark-secondary py-12 md:py-16">
+        <div id="ai-concierge-section" class="bg-gw-dark-secondary py-12 md:py-16">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -359,32 +427,32 @@
                             <!-- HARD-CODED INITIAL SAMPLES -->
                             <div id="ai-results-grid-initial" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pb-4 pt-2">
                                 
-                                <!-- Card 1: Tech Essentials Kit -->
-                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70" onclick="selectGiftOption('Tech Essentials Kit')" tabindex="0" role="button" aria-label="Select Tech Essentials Kit">
-                                    <img src="https://images.unsplash.com/photo-1542435503-921473aa8b7a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tech Essentials Kit" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" onerror="this.onerror=null; this.src='https://placehold.co/180x180/1A2C38/D4AF37?text=Tech+Kit';">
-                                    <p class="gift-card-title text-sm md:text-base text-center truncate">Tech Essentials Kit</p>
-                                    <p class="gift-card-desc text-xs text-center">Smart & practical for engineers</p>
+                                <!-- Card 1: Tech Essentials Kit (Gold background) -->
+                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Tech Essentials Kit')" tabindex="0" role="button" aria-label="Select Tech Essentials Kit">
+                                    <img src="https://images.unsplash.com/photo-1542435503-921473aa8b7a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tech Essentials Kit" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/1A2C38/D4AF37?text=Tech+Kit';">
+                                    <p class="gift-card-title text-sm md:text-base text-center">Tech Essentials Kit</p>
+                                    <!-- Price tag removed -->
                                 </div>
                                 
                                 <!-- Card 2: Desk Zen Set -->
-                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70" onclick="selectGiftOption('Desk Zen Set')" tabindex="0" role="button" aria-label="Select Desk Zen Set">
-                                    <img src="https://images.unsplash.com/photo-1577977465355-6b5c3d2f928a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Desk Zen Set" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" onerror="this.onerror=null; this.src='https://placehold.co/180x180/3A4B62/D4AF37?text=Desk+Zen';">
-                                    <p class="gift-card-title text-sm md:text-base text-center truncate">Desk Zen Set</p>
-                                    <p class="gift-card-desc text-xs text-center">Minimalist & calming workspace</p>
+                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Desk Zen Set')" tabindex="0" role="button" aria-label="Select Desk Zen Set">
+                                    <img src="https://images.unsplash.com/photo-1577977465355-6b5c3d2f928a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Desk Zen Set" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/3A4B62/D4AF37?text=Desk+Zen';">
+                                    <p class="gift-card-title text-sm md:text-base text-center">Desk Zen Set</p>
+                                    <!-- Price tag removed -->
                                 </div>
                                 
                                 <!-- Card 3: Travel Smart Pack -->
-                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70" onclick="selectGiftOption('Travel Smart Pack')" tabindex="0" role="button" aria-label="Select Travel Smart Pack">
-                                    <img src="https://images.unsplash.com/photo-1587327429158-b7a42a344933?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Travel Smart Pack" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" onerror="this.onerror=null; this.src='https://placehold.co/180x180/5C7A5C/D4AF37?text=Travel+Pack';">
-                                    <p class="gift-card-title text-sm md:text-base text-center truncate">Travel Smart Pack</p>
-                                    <p class="gift-card-desc text-xs text-center">Perfect for teams on the go</p>
+                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Travel Smart Pack')" tabindex="0" role="button" aria-label="Select Travel Smart Pack">
+                                    <img src="https://images.unsplash.com/photo-1587327429158-b7a42a344933?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Travel Smart Pack" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/5C7A5C/D4AF37?text=Travel+Pack';">
+                                    <p class="gift-card-title text-sm md:text-base text-center">Travel Smart Pack</p>
+                                    <!-- Price tag removed -->
                                 </div>
                                 
                                 <!-- Card 4: Coffee & Code Box -->
-                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70" onclick="selectGiftOption('Coffee & Code Box')" tabindex="0" role="button" aria-label="Select Coffee & Code Box">
-                                    <img src="https://images.unsplash.com/photo-1517402685651-7f97b7b15a6b?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Coffee & Code Box" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" onerror="this.onerror=null; this.src='https://placehold.co/180x180/A77F3C/D4AF37?text=Coffee+Code';">
-                                    <p class="gift-card-title text-sm md:text-base text-center truncate">Coffee & Code Box</p>
-                                    <p class="gift-card-desc text-xs text-center">Fuel productivity</p>
+                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Coffee & Code Box')" tabindex="0" role="button" aria-label="Select Coffee & Code Box">
+                                    <img src="https://images.unsplash.com/photo-1517402685651-7f97b7b15a6b?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Coffee & Code Box" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/A77F3C/D4AF37?text=Coffee+Code';">
+                                    <p class="gift-card-title text-sm md:text-base text-center">Coffee & Code Box</p>
+                                    <!-- Price tag removed -->
                                 </div>
                             </div>
                             <!-- END HARD-CODED INITIAL SAMPLES -->
@@ -405,7 +473,8 @@
 
                             <!-- Input and Button -->
                             <div class="flex items-center space-x-2">
-                                <input type="text" id="chat-input" placeholder="Gifts for 10 engineers, ₹5,000 budget, tech theme" class="w-full bg-gw-dark-secondary text-gw-text p-3 rounded-lg focus:outline-none placeholder-gray-500 text-sm border border-gw-dark-secondary focus:border-gw-gold transition" aria-label="AI Concierge Input">
+                                <!-- Dynamic Placeholder logic is now controlled by JS function -->
+                                <input type="text" id="chat-input" placeholder="Loading AI suggestions..." class="w-full bg-gw-dark-secondary text-gw-text p-3 rounded-lg focus:outline-none placeholder-gray-500 text-sm border border-gw-dark-secondary focus:border-gw-gold transition" aria-label="AI Concierge Input">
                                 <button id="curate-button" class="bg-gw-gold text-gw-dark px-4 py-3 text-sm font-bold rounded-lg shadow-lg hover:bg-opacity-90 transition duration-300 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold" aria-label="Curate gifts based on input">
                                     Curate
                                 </button>
@@ -424,7 +493,7 @@
                     <!-- Right Column: Metrics and Visual -->
                     <div class="lg:col-span-1 flex flex-col items-center justify-start gap-8 mt-6 lg:mt-0">
                         
-                        <!-- Trust Metrics -->
+                        <!-- Trust Metrics (Unchanged) -->
                         <div class="grid grid-cols-3 gap-3 w-full">
                             
                             <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
@@ -443,7 +512,7 @@
                             </div>
                         </div>
 
-                        <!-- AI Graphic -->
+                        <!-- AI Graphic (Unchanged) -->
                         <div class="w-full h-64 md:h-80 ai-graphic-bg rounded-xl flex items-center justify-center shadow-2xl border border-gw-gold/50 bot-pulse-ring">
                             <div class="relative flex items-center justify-center">
                                 <!-- Main Box Icon -->
@@ -458,36 +527,52 @@
                 </section>
             </div>
         </div>
+        
+        <!-- Trusted By Section (Social Proof) -->
+        <section class="bg-gw-dark shadow-inner py-8">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sm font-medium text-gray-400 uppercase tracking-widest mb-4">Trusted By Leading Global Brands</p>
+                <div class="flex flex-wrap justify-center items-center gap-6 md:gap-12">
+                    <i data-lucide="building-2" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
+                    <i data-lucide="briefcase" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
+                    <i data-lucide="code" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
+                    <i data-lucide="globe" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
+                    <i data-lucide="factory" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300 hidden sm:block" aria-label="Mock Company Logo"></i>
+                    <i data-lucide="rocket" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300 hidden lg:block" aria-label="Mock Company Logo"></i>
+                </div>
+            </div>
+        </section>
+
 
         <!-- Lower Body Sections -->
         <div class="bg-gray-100 flex-grow">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
 
-                <!-- Core Service Guarantees (Now more responsive and prominent) -->
+                <!-- Core Service Guarantees -->
                 <section class="mb-12 border-b border-gray-300 pb-8">
                     <h3 class="text-xl font-bold mb-6 text-gray-800 text-center uppercase tracking-wider">The GiftWell Difference</h3>
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 text-sm font-medium text-gray-700">
-                        <!-- Guarantees converted to a responsive grid for better mobile layout -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 text-sm font-medium">
+                        
                         <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
                             <i data-lucide="package" class="w-5 h-5 text-gw-dark"></i>
-                            <span class="font-semibold text-xs md:text-sm">FAST METRO DELIVERY</span>
+                            <span class="font-semibold text-xs md:text-sm text-gray-900">Guaranteed Express Metro Shipping</span>
                         </div>
                         <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
                             <i data-lucide="link" class="w-5 h-5 text-gw-dark"></i>
-                            <span class="font-semibold text-xs md:text-sm">RECIPIENT-CHOICE LINKS</span>
+                            <span class="font-semibold text-xs md:text-sm text-gray-900">Allow Recipients to Choose</span>
                         </div>
                         <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
                             <i data-lucide="file-text" class="w-5 h-5 text-gw-dark"></i>
-                            <span class="font-semibold text-xs md:text-sm">GST-READY INVOICES</span>
+                            <span class="font-semibold text-xs md:text-sm text-gray-900">Full Tax-Ready Invoicing</span>
                         </div>
                         <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
                             <i data-lucide="message-circle" class="w-5 h-5 text-gw-dark"></i>
-                            <span class="font-semibold text-xs md:text-sm">WHATSAPP ORDERING</span>
+                            <span class="font-semibold text-xs md:text-sm text-gray-900">Direct Order Management via WhatsApp</span>
                         </div>
                     </div>
                 </section>
                 
-                <!-- Shop by Occasion (Completed) -->
+                <!-- Shop by Occasion -->
                 <section class="mb-12">
                     <h3 class="text-2xl font-semibold mb-6 text-gray-800">Shop by Occasion</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -514,7 +599,7 @@
                     </div>
                 </section>
 
-                <!-- How It Works Section (The 3-Step Process - New) -->
+                <!-- How It Works Section (The 3-Step Process) -->
                 <section class="mb-12 pt-6">
                     <h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Your 3-Step Gifting Journey</h3>
                     
@@ -547,13 +632,22 @@
                             <p class="text-gray-600 text-sm">Enjoy seamless bulk fulfillment, pan-India delivery, and real-time tracking through your dashboard.</p>
                         </div>
                     </div>
+                    
+                    <!-- Final CTA (Scrolls up to the AI section) -->
+                    <div class="text-center mt-10">
+                        <a href="#ai-concierge-section" class="inline-flex items-center justify-center bg-gw-gold text-gw-dark px-10 py-4 text-lg font-extrabold rounded-xl shadow-xl hover:bg-opacity-90 transition duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold">
+                            Start Curating Your Gifts Now
+                            <i data-lucide="chevron-up" class="w-5 h-5 ml-2"></i>
+                        </a>
+                    </div>
+
                 </section>
 
             </div>
         </div>
     </main>
     
-    <!-- Footer (New) -->
+    <!-- Footer -->
     <footer class="bg-gw-darker-footer text-gw-text py-10">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-5 gap-8 border-b border-gw-dark/50 pb-8 mb-8">
@@ -565,7 +659,7 @@
                     </div>
                     <p class="text-sm text-gray-400">AI-Powered Corporate Gifting, Simplified.</p>
                     <div class="flex space-x-3 mt-4">
-                         <!-- Mock Social Icons -->
+                        <!-- Mock Social Icons -->
                         <a href="#" class="text-gray-400 hover:text-gw-gold transition" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
                         <a href="#" class="text-gray-400 hover:text-gw-gold transition" aria-label="Twitter"><i data-lucide="twitter" class="w-5 h-5"></i></a>
                     </div>
@@ -618,6 +712,5 @@
         </div>
     </footer>
     
-    <!-- Final Lucide rendering is handled by the window.onload function in the head script for all elements. -->
 </body>
 </html>
