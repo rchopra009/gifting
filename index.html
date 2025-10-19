@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GiftWell - Corporate Gifting Platform</title>
     
+    <!-- Load Inter Font & Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -12,43 +13,102 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8f8f8;
+            min-height: 100vh;
         }
-        /* Custom shadows for the metric badges to simulate the mockup's visual lift */
+        
+        /* Custom scrollbar for the chat history (for non-Firefox browsers) */
+        #chat-history::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Custom shadows for the metric badges and a subtle hover lift */
         .metric-shadow {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 0 10px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 0 15px rgba(212, 175, 55, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .metric-shadow:hover {
+            transform: translateY(-2px);
         }
         
         /* CSS for the Bot Pulse Animation */
         @keyframes pulse-gold {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6);
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
             }
             50% {
-                transform: scale(1.05);
-                box-shadow: 0 0 0 8px rgba(212, 175, 55, 0);
+                transform: scale(1.03);
+                box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
             }
         }
 
-        .bot-pulse {
-            animation: pulse-gold 1.5s infinite;
+        .bot-pulse-ring {
+            animation: pulse-gold 2s infinite;
         }
 
-        /* NEW: Added for the visual graphic */
+        /* NEW: Enhanced AI Graphic background */
         .ai-graphic-bg {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(36, 52, 68, 0.8));
+            /* Subtle texture and deep gradient for a tech/luxury feel */
+            background: linear-gradient(135deg, rgba(36, 52, 68, 1) 0%, rgba(26, 44, 56, 1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-graphic-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Specific styling for the new gift cards */
+        .gift-card {
+            background-color: #1A2C38; /* gw-dark-secondary, which is the chat background color */
+            color: #E5E7EB; /* gw-text */
+        }
+        
+        /* New: Animation classes for seamless transition */
+        .fade-in-results {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .gift-card-title {
+            font-weight: 700; /* bold */
+            color: white;
+            line-height: 1.25;
+            margin-bottom: 4px;
+        }
+        
+        .gift-card-desc {
+            font-size: 0.875rem; /* text-sm */
+            color: #9CA3AF; /* gray-400 */
         }
     </style>
     <script>
-        // Custom Tailwind configuration to match the mockup's color palette and depth
+        // Custom Tailwind configuration for the premium dark/gold theme
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'gw-dark': '#243444', /* Slightly lighter primary dark */
-                        'gw-dark-secondary': '#1A2C38', /* Deeper dark for the lower section */
+                        'gw-dark': '#2E3D4D', /* Slightly lighter dark for contrast */
+                        'gw-dark-secondary': '#1A2C38', /* Deeper dark for the main AI section */
                         'gw-darker-footer': '#12202A', /* Darkest for the footer */
-                        'gw-gold': '#D4AF37', /* Richer, more pronounced gold */
+                        'gw-gold': '#D4AF37', /* Rich gold primary color */
                         'gw-text': '#E5E7EB',
                         
                         /* Occasion/Category Cards Colors */
@@ -59,52 +119,66 @@
                     },
                     boxShadow: {
                         'card-lg': '0 8px 15px rgba(0, 0, 0, 0.15)',
+                        'ai-chat': '0 15px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.2)',
                     }
                 }
             }
         }
         
-        // --- JAVASCRIPT FOR DYNAMIC INTERACTION ---
+        // --- JAVASCRIPT FOR DYNAMIC INTERACTION (MOCK) ---
         
-        // Sample data for demonstration
+        // Initial set of gifts displayed statically before search
         const initialSampleGifts = [
-            { id: 1, name: "Executive Headphones Set", image: "https://placehold.co/180x180/3A4B62/D4AF37?text=Headphones" },
-            { id: 2, name: "Eco-Friendly Desk Plant", image: "https://placehold.co/180x180/5C7A5C/D4AF37?text=Plant+Kit" },
-            { id: 3, name: "Gourmet Coffee Kit", image: "https://placehold.co/180x180/A77F3C/D4AF37?text=Coffee+Brew" },
-            { id: 4, name: "Wellness & Travel Bag", image: "https://placehold.co/180x180/3D546D/D4AF37?text=Travel+Bag" },
+            { id: 1, name: "Tech Essentials Kit", description: "Smart & practical for engineers", image: "https://placehold.co/180x180/2E3D4D/D4AF37?text=Tech+Kit" },
+            { id: 2, name: "Desk Zen Set", description: "Minimalist & calming workspace", image: "https://placehold.co/180x180/2E3D4D/D4AF37?text=Desk+Zen" },
+            { id: 3, name: "Travel Smart Pack", description: "Perfect for teams on the go", image: "https://placehold.co/180x180/2E3D4D/D4AF37?text=Travel+Pack" },
+            { id: 4, name: "Coffee & Code Box", description: "Fuel productivity", image: "https://placehold.co/180x180/2E3D4D/D4AF37?text=Coffee+Code" },
         ];
+
 
         // Function to simulate a gift card click
         function selectGiftOption(name) {
             const chatInput = document.getElementById('chat-input');
             const chatHistory = document.getElementById('chat-history');
             
-            // Clear current input and set next prompt
             chatInput.value = ""; 
             chatInput.placeholder = `Customizing "${name}". Enter details (e.g., 'add logo, change color to black').`;
 
             // Add the selection confirmation to history
             const userPart = document.createElement('div');
             userPart.className = 'text-right mb-4';
-            userPart.innerHTML = `<span class="inline-block bg-gw-gold text-gw-dark px-4 py-2 rounded-xl rounded-br-none shadow-md">I select: ${name}</span>`;
+            userPart.innerHTML = `
+                <span class="inline-block bg-gw-gold text-gw-dark px-4 py-2 rounded-xl rounded-br-none shadow-lg max-w-[80%]">
+                    I select: <strong class="font-extrabold">${name}</strong>
+                </span>`;
             chatHistory.appendChild(userPart);
             
-            // Scroll to bottom
+            // AI response confirming next step
+            setTimeout(() => {
+                const aiPart = document.createElement('div');
+                aiPart.className = 'text-left mb-4';
+                aiPart.innerHTML = `<span class="inline-block bg-gw-dark text-gw-text px-4 py-2 rounded-xl rounded-tl-none shadow-lg max-w-[80%]">Excellent choice. How would you like to customize this item?</span>`;
+                chatHistory.appendChild(aiPart);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }, 500);
+
             chatHistory.scrollTop = chatHistory.scrollHeight;
         }
 
-        // Function to generate the HTML for the result cards
+        // Function to generate the HTML for the search results (minimalist version)
         function generateResultCards(gifts) {
             return `
-                <div id="ai-results-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6 pb-6 pt-4 transition duration-500 ease-in-out">
+                <div id="ai-results-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pb-4 pt-2 fade-in-results">
                     ${gifts.map(gift => `
                         <div 
-                            class="bg-gw-dark rounded-xl shadow-xl border-2 border-gw-gold/50 p-3 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gw-gold"
+                            class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70"
                             onclick="selectGiftOption('${gift.name}')"
+                            onkeypress="if(event.key === 'Enter') selectGiftOption('${gift.name}')"
                             tabindex="0"
                         >
-                            <img src="${gift.image}" alt="${gift.name}" class="w-full h-auto rounded-lg mb-2 object-cover aspect-square">
-                            <p class="text-sm font-semibold text-gw-text text-center truncate">${gift.name}</p>
+                            <img src="${gift.image}" alt="${gift.name}" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-dark-secondary/50">
+                            <p class="gift-card-title text-sm md:text-base text-center truncate">${gift.name}</p>
+                            <!-- Note: Description removed here for minimalist, tight layout as requested -->
                         </div>
                     `).join('')}
                 </div>
@@ -117,41 +191,63 @@
             const aiResultsContainer = document.getElementById('ai-results-container');
             const chatInput = document.getElementById('chat-input');
 
+            // Check if user is trying to customize an existing item (simple mock state)
+            const customizing = chatInput.placeholder.includes('Customizing');
+            
             // 1. Add user query to history
             const userPart = document.createElement('div');
             userPart.className = 'text-right mb-4';
-            userPart.innerHTML = `<span class="inline-block bg-gw-dark px-4 py-2 text-gw-text rounded-xl rounded-br-none shadow-md">${query}</span>`;
+            userPart.innerHTML = `<span class="inline-block bg-gw-dark px-4 py-2 text-gw-text rounded-xl rounded-br-none shadow-lg max-w-[80%]">${query}</span>`;
             chatHistory.appendChild(userPart);
 
             // 2. Clear input and show loading
             chatInput.value = '';
-            aiResultsContainer.innerHTML = `
-                <div class="py-8 flex justify-center items-center text-gw-gold">
-                    <svg class="animate-spin -ml-1 mr-3 h-8 w-8 text-gw-gold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span class="text-white text-lg font-medium">Curating 4 optimal gifts...</span>
-                </div>
-            `;
+            
+            if (!customizing) {
+                // Show loading for new search
+                aiResultsContainer.innerHTML = `
+                    <div class="py-8 flex justify-center items-center text-gw-gold">
+                        <svg class="animate-spin -ml-1 mr-3 h-8 w-8 text-gw-gold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span class="text-white text-lg font-medium">Curating 4 optimal gifts...</span>
+                    </div>
+                `;
+            }
+            
             chatHistory.scrollTop = chatHistory.scrollHeight;
 
-            // 3. Simulate API delay and show results
+            // 3. Simulate API delay and show results/response
             setTimeout(() => {
-                const newResults = [
-                    { id: 5, name: "Premium Leather Portfolio", image: `https://placehold.co/180x180/4B3D3D/D4AF37?text=Portfolio+${Math.floor(Math.random() * 100)}` },
-                    { id: 6, name: "High-Powered Bluetooth Speaker", image: `https://placehold.co/180x180/3D4B6D/D4AF37?text=Speaker+${Math.floor(Math.random() * 100)}` },
-                    { id: 7, name: "Luxury Scented Candle Set", image: `https://placehold.co/180x180/7D7D4D/D4AF37?text=Candle+Set+${Math.floor(Math.random() * 100)}` },
-                    { id: 8, name: "Travel Drone Kit (Pro)", image: `https://placehold.co/180x180/546D3D/D4AF37?text=Drone+Kit+${Math.floor(Math.random() * 100)}` },
-                ];
+                if (customizing) {
+                    // Customization response
+                    const aiPart = document.createElement('div');
+                    aiPart.className = 'text-left mb-4';
+                    aiPart.innerHTML = `<span class="inline-block bg-gw-dark text-gw-text px-4 py-2 rounded-xl rounded-tl-none shadow-lg max-w-[80%]">Understood. I've updated the quote for your custom item. Ready to proceed to bulk ordering?</span>`;
+                    chatHistory.appendChild(aiPart);
+                    chatInput.placeholder = 'Ready for bulk order or need further assistance?';
+                } else {
+                    // New search results response (using mock data)
+                    const newResults = [
+                        { id: 5, name: "Premium Leather Portfolio", image: `https://placehold.co/180x180/4B3D3D/D4AF37?text=Portfolio` },
+                        { id: 6, name: "Smart Watch Bundle", image: `https://placehold.co/180x180/3D4B6D/D4AF37?text=Watch` },
+                        { id: 7, name: "Luxury Scented Candle Set", image: `https://placehold.co/180x180/7D7D4D/D4AF37?text=Candle` },
+                        { id: 8, name: "Wireless Charging Mat", image: `https://placehold.co/180x180/546D3D/D4AF37?text=Charger` },
+                    ];
+                    
+                    aiResultsContainer.innerHTML = generateResultCards(newResults);
+                    
+                    // Add AI response to history
+                    const aiPart = document.createElement('div');
+                    aiPart.className = 'text-left mb-4';
+                    aiPart.innerHTML = `<span class="inline-block bg-gw-dark text-gw-text px-4 py-2 rounded-xl rounded-tl-none shadow-lg max-w-[80%]">Based on your query, here are 4 perfect options. Click on one to customize, or refine your search.</span>`;
+                    chatHistory.appendChild(aiPart);
+                    
+                    // Reset placeholder for next search
+                    chatInput.placeholder = "Gifts for 10 engineers, ₹5,000 budget, tech theme";
+                }
                 
-                aiResultsContainer.innerHTML = generateResultCards(newResults);
-                
-                // Add AI response to history
-                const aiPart = document.createElement('div');
-                aiPart.className = 'text-left mb-4';
-                aiPart.innerHTML = `<span class="inline-block bg-gw-dark text-gw-text px-4 py-2 rounded-xl rounded-tl-none shadow-md">I found these 4 perfect options based on your prompt. Click on one to customize, or refine your search.</span>`;
-                chatHistory.appendChild(aiPart);
                 chatHistory.scrollTop = chatHistory.scrollHeight;
             }, 1500); 
         }
@@ -164,14 +260,22 @@
             const submitQuery = () => {
                 const query = chatInput.value.trim();
                 if (query) {
+                    // Clear the static greeting text from the chat history when user interacts
+                    const staticGreeting = document.getElementById('static-greeting-text');
+                    if (staticGreeting) staticGreeting.classList.add('hidden'); 
+                    
                     simulateAISearch(query);
                 }
             };
 
+            // Set up button click and enter key press for submission
             if (curateButton) {
                 curateButton.addEventListener('click', submitQuery);
             }
             if (chatInput) {
+                // Set the initial placeholder text
+                chatInput.placeholder = "Gifts for 10 engineers, ₹5,000 budget, tech theme";
+
                 chatInput.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
                         e.preventDefault(); // Prevent new line in input
@@ -179,24 +283,17 @@
                     }
                 });
             }
-            
-            // Initial AI greeting message
-            const chatHistory = document.getElementById('chat-history');
-            const initialGreeting = document.createElement('div');
-            initialGreeting.className = 'text-left mb-4';
-            initialGreeting.innerHTML = `<span class="inline-block bg-gw-dark text-gw-text px-4 py-2 rounded-xl rounded-tl-none shadow-md">Hello! I'm your AI Concierge. Describe the perfect corporate gift for your event to get started.</span>`;
-            chatHistory.appendChild(initialGreeting);
         };
-
     </script>
 </head>
-<body class="bg-gray-100 antialiased">
+<body class="bg-gray-100 antialiased min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <header class="bg-gw-dark shadow-xl">
+    <header class="bg-gw-dark shadow-xl sticky top-0 z-10">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             
             <div class="flex items-center space-x-2">
+                <!-- Logo/Icon -->
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M16 8C16 10.2091 14.2091 12 12 12C9.79086 12 8 10.2091 8 8C8 5.79086 9.79086 4 12 4C14.2091 4 16 5.79086 16 8Z" fill="#D4AF37" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -206,88 +303,101 @@
             </div>
 
             <nav class="hidden md:flex flex-grow justify-center space-x-8 text-sm font-medium">
-                <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200">Solutions</a>
-                <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200">Catalogs</a>
-                <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200">Bulk Orders</a>
-                <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200">About Us</a>
+                <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200" aria-label="Explore Gifting Solutions">Solutions</a>
+                <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200" aria-label="View Product Catalogs">Catalogs</a>
+                <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200" aria-label="Start a Bulk Order">Bulk Orders</a>
+                <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200" aria-label="Learn About GiftWell">About Us</a>
             </nav>
 
-            <button class="bg-gw-gold text-gw-dark px-5 py-2 text-sm font-semibold rounded-lg shadow-md hover:bg-opacity-90 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gw-dark">
+            <button class="bg-gw-gold text-gw-dark px-5 py-2 text-sm font-semibold rounded-lg shadow-md hover:bg-opacity-90 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gw-dark" aria-label="Access B2B Customer Portal">
                 B2B Portal
             </button>
         </div>
     </header>
 
-    <main>
-        <!-- AI Concierge and Results Section (Top Priority) -->
-        <div class="bg-gw-dark-secondary py-16">
+    <main class="flex-grow">
+        <!-- AI Concierge and Results Section (The Core Feature) -->
+        <div class="bg-gw-dark-secondary py-12 md:py-16">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start pb-10">
+                <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                     
-                    <!-- Left Column: AI Chat and Results -->
-                    <div class="lg:col-span-2 space-y-4">
+                    <!-- Left Column: AI Chat and Results (Combined Interface) -->
+                    <div class="lg:col-span-2 space-y-6">
                         
                         <!-- Hero Text -->
-                        <div class="text-left mb-6">
-                            <h2 class="text-4xl font-extrabold text-white mb-2 tracking-tight">
+                        <div class="text-left mb-4">
+                            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-3 tracking-tight">
                                 Revolutionize Gifting: Your <span class="text-gw-gold">AI Concierge</span> Awaits.
                             </h2>
-                            <p class="text-gw-text text-lg font-light">
-                                Describe your recipients, budget, and goals—we'll instantly curate custom, buildable gift boxes.
+                            <p class="text-gw-text text-lg font-light max-w-xl">
+                                Describe your recipients, budget, and goals—we'll instantly curate custom, buildable gift boxes in seconds.
                             </p>
                         </div>
 
-                        <!-- AI Results Container (Guaranteed Static Samples) -->
+                        <!-- AI Results Container (Static/Dynamic Results) -->
                         <div id="ai-results-container" class="transition duration-500 ease-in-out">
-                            <!-- HARD-CODED INITIAL SAMPLES FOR GUARANTEED DISPLAY -->
-                            <div id="ai-results-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6 pb-6 pt-4">
+                            <!-- HARD-CODED INITIAL SAMPLES - Use generateResultCards for dynamic results -->
+                            <div id="ai-results-grid-initial" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pb-4 pt-2">
                                 
-                                <div class="bg-gw-dark rounded-xl shadow-xl border-2 border-gw-gold/50 p-3 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gw-gold" onclick="selectGiftOption('Executive Headphones Set')" tabindex="0">
-                                    <img src="https://placehold.co/180x180/3A4B62/D4AF37?text=Headphones" alt="Executive Headphones Set" class="w-full h-auto rounded-lg mb-2 object-cover aspect-square">
-                                    <p class="text-sm font-semibold text-gw-text text-center truncate">Executive Headphones Set</p>
+                                <!-- Card 1: Tech Essentials Kit -->
+                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70" onclick="selectGiftOption('Tech Essentials Kit')" tabindex="0" role="button" aria-label="Select Tech Essentials Kit">
+                                    <img src="https://placehold.co/180x180/2E3D4D/D4AF37?text=Tech+Kit" alt="Tech Essentials Kit" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50">
+                                    <p class="gift-card-title text-sm md:text-base text-center truncate">Tech Essentials Kit</p>
+                                    <p class="gift-card-desc text-xs text-center">Smart & practical for engineers</p>
                                 </div>
                                 
-                                <div class="bg-gw-dark rounded-xl shadow-xl border-2 border-gw-gold/50 p-3 cursor-pointer transform transition hover:scale-[1.03]" onclick="selectGiftOption('Eco-Friendly Desk Plant')" tabindex="0">
-                                    <img src="https://placehold.co/180x180/5C7A5C/D4AF37?text=Plant+Kit" alt="Eco-Friendly Desk Plant" class="w-full h-auto rounded-lg mb-2 object-cover aspect-square">
-                                    <p class="text-sm font-semibold text-gw-text text-center truncate">Eco-Friendly Desk Plant</p>
+                                <!-- Card 2: Desk Zen Set -->
+                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70" onclick="selectGiftOption('Desk Zen Set')" tabindex="0" role="button" aria-label="Select Desk Zen Set">
+                                    <img src="https://placehold.co/180x180/2E3D4D/D4AF37?text=Desk+Zen" alt="Desk Zen Set" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50">
+                                    <p class="gift-card-title text-sm md:text-base text-center truncate">Desk Zen Set</p>
+                                    <p class="gift-card-desc text-xs text-center">Minimalist & calming workspace</p>
                                 </div>
                                 
-                                <div class="bg-gw-dark rounded-xl shadow-xl border-2 border-gw-gold/50 p-3 cursor-pointer transform transition hover:scale-[1.03]" onclick="selectGiftOption('Gourmet Coffee Kit')" tabindex="0">
-                                    <img src="https://placehold.co/180x180/A77F3C/D4AF37?text=Coffee+Brew" alt="Gourmet Coffee Kit" class="w-full h-auto rounded-lg mb-2 object-cover aspect-square">
-                                    <p class="text-sm font-semibold text-gw-text text-center truncate">Gourmet Coffee Kit</p>
+                                <!-- Card 3: Travel Smart Pack -->
+                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70" onclick="selectGiftOption('Travel Smart Pack')" tabindex="0" role="button" aria-label="Select Travel Smart Pack">
+                                    <img src="https://placehold.co/180x180/2E3D4D/D4AF37?text=Travel+Pack" alt="Travel Smart Pack" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50">
+                                    <p class="gift-card-title text-sm md:text-base text-center truncate">Travel Smart Pack</p>
+                                    <p class="gift-card-desc text-xs text-center">Perfect for teams on the go</p>
                                 </div>
                                 
-                                <div class="bg-gw-dark rounded-xl shadow-xl border-2 border-gw-gold/50 p-3 cursor-pointer transform transition hover:scale-[1.03]" onclick="selectGiftOption('Wellness & Travel Bag')" tabindex="0">
-                                    <img src="https://placehold.co/180x180/3D546D/D4AF37?text=Travel+Bag" alt="Wellness & Travel Bag" class="w-full h-auto rounded-lg mb-2 object-cover aspect-square">
-                                    <p class="text-sm font-semibold text-gw-text text-center truncate">Wellness & Travel Bag</p>
+                                <!-- Card 4: Coffee & Code Box -->
+                                <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70" onclick="selectGiftOption('Coffee & Code Box')" tabindex="0" role="button" aria-label="Select Coffee & Code Box">
+                                    <img src="https://placehold.co/180x180/2E3D4D/D4AF37?text=Coffee+Code" alt="Coffee & Code Box" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50">
+                                    <p class="gift-card-title text-sm md:text-base text-center truncate">Coffee & Code Box</p>
+                                    <p class="gift-card-desc text-xs text-center">Fuel productivity</p>
                                 </div>
                             </div>
                             <!-- END HARD-CODED INITIAL SAMPLES -->
                         </div>
 
-                        <!-- Chat Interface -->
-                        <div class="bg-gw-dark p-6 rounded-xl shadow-2xl space-y-4">
+                        <!-- Chat Interface (Seamlessly attached below results) -->
+                        <div class="bg-gw-dark rounded-xl shadow-ai-chat space-y-4 p-4 md:p-6 border border-gw-gold/20">
                             
-                            <!-- Chat History Area -->
-                            <div id="chat-history" class="h-32 overflow-y-auto pr-2" style="scrollbar-width: none; -ms-overflow-style: none;">
-                                <!-- AI greeting and subsequent messages will appear here -->
+                            <!-- Static Greeting Header (Tighter integration) -->
+                            <p id="static-greeting-text" class="text-gw-text text-sm font-light leading-relaxed">
+                                Hi! I’m your AI Gifting Concierge. Tell me what you’re looking for — like **‘Gifts for 10 engineers, ₹5,000 budget, tech theme.’**
+                            </p>
+
+                            <!-- Chat History Area (Only for dynamic messages) -->
+                            <div id="chat-history" class="h-16 overflow-y-auto pr-2" style="scrollbar-width: none; -ms-overflow-style: none;" aria-live="polite">
+                                <!-- Dynamic user/AI messages will appear here -->
                             </div>
 
                             <!-- Input and Button -->
                             <div class="flex items-center space-x-2">
-                                <input type="text" id="chat-input" placeholder="Example: 'Gifts for 10 engineers, $75 budget, tech accessories'" class="w-full bg-gw-dark-secondary text-gw-text p-3 rounded-lg focus:outline-none placeholder-gray-500 text-sm border border-gw-dark-secondary focus:border-gw-gold transition" aria-label="AI Concierge Input">
-                                <button id="curate-button" class="bg-gw-gold text-gw-dark px-4 py-3 text-sm font-semibold rounded-lg shadow-md hover:bg-opacity-90 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gw-gold">
+                                <input type="text" id="chat-input" placeholder="Gifts for 10 engineers, ₹5,000 budget, tech theme" class="w-full bg-gw-dark-secondary text-gw-text p-3 rounded-lg focus:outline-none placeholder-gray-500 text-sm border border-gw-dark-secondary focus:border-gw-gold transition" aria-label="AI Concierge Input">
+                                <button id="curate-button" class="bg-gw-gold text-gw-dark px-4 py-3 text-sm font-bold rounded-lg shadow-lg hover:bg-opacity-90 transition duration-300 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold" aria-label="Curate gifts based on input">
                                     Curate
                                 </button>
                             </div>
                             
                             <!-- Action Tags -->
-                            <div class="flex flex-wrap gap-2 pt-2">
-                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">TEAM SIZE</span>
-                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">BUDGET</span>
-                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">VALUES</span>
-                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/20 transition border border-gw-dark/50">TIMELINE</span>
+                            <div class="flex flex-wrap gap-2 pt-1">
+                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'My team size is 50 employees'">TEAM SIZE (50+)</span>
+                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'Budget is ₹15,000 per person'">BUDGET (₹15k)</span>
+                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'Focus on sustainable and green products'">SUSTAINABLE</span>
+                                <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'Need delivery by next month'">TIMELINE</span>
                             </div>
                         </div>
                     </div>
@@ -296,123 +406,117 @@
                     <div class="lg:col-span-1 flex flex-col items-center justify-start gap-8 mt-6 lg:mt-0">
                         
                         <!-- Trust Metrics -->
-                        <div class="grid grid-cols-3 gap-3 w-full max-w-sm">
+                        <div class="grid grid-cols-3 gap-3 w-full">
                             
                             <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
-                                <i data-lucide="handshake" class="w-8 h-8 text-gw-gold mb-1"></i>
-                                <span class="text-white text-xs font-semibold uppercase mt-2">Client Base</span>
+                                <i data-lucide="handshake" class="w-7 h-7 md:w-8 md:h-8 text-gw-gold mb-1"></i>
+                                <span class="text-gw-text text-xs font-semibold uppercase mt-1 text-center">Client Base</span>
                             </div>
                             
                             <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
                                 <p class="text-2xl font-extrabold text-gw-gold">4.8/5</p>
-                                <span class="text-gw-text text-xs font-light uppercase">Client CSAT</span>
+                                <span class="text-gw-text text-xs font-light uppercase text-center">Client CSAT</span>
                             </div>
                             
                             <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
                                 <p class="text-2xl font-extrabold text-gw-gold">98%</p>
-                                <span class="text-gw-text text-xs font-light uppercase">On-Time</span>
+                                <span class="text-gw-text text-xs font-light uppercase text-center">On-Time</span>
                             </div>
                         </div>
 
                         <!-- AI Graphic -->
-                        <div class="w-full max-w-sm h-48 bg-gw-dark rounded-xl flex items-center justify-center shadow-2xl ai-graphic-bg border border-gw-gold/30">
-                            
-                            <i data-lucide="box" class="w-20 h-20 text-gw-gold opacity-70 animate-bounce-slow"></i>
-                            <i data-lucide="sparkles" class="w-10 h-10 text-white absolute translate-x-12 translate-y-12 animate-pulse-slow"></i>
+                        <div class="w-full h-64 md:h-80 ai-graphic-bg rounded-xl flex items-center justify-center shadow-2xl border border-gw-gold/50 bot-pulse-ring">
+                            <div class="relative flex items-center justify-center">
+                                <!-- Main Box Icon -->
+                                <i data-lucide="package-search" class="w-20 h-20 text-gw-gold opacity-80"></i>
+                                <!-- Sparkle Icons for the AI effect -->
+                                <i data-lucide="sparkles" class="w-10 h-10 text-white absolute -top-4 -right-2 animate-pulse" style="animation-delay: 0.5s;"></i>
+                                <i data-lucide="zap" class="w-6 h-6 text-gw-gold absolute bottom-2 left-0 animate-pulse" style="animation-delay: 1s;"></i>
+                            </div>
+                            <p class="absolute bottom-4 text-xs font-light text-gw-text/70">Intelligent Gift Matching</p>
                         </div>
                     </div>
                 </section>
-                
-                <!-- AI-Generated Gift Profiles (Previous Static Section - now integrated into the dynamic section) -->
             </div>
         </div>
 
-        <!-- Lower Body Sections (Original Mockup Content) -->
-        <div class="bg-gray-100">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <!-- Lower Body Sections -->
+        <div class="bg-gray-100 flex-grow">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
 
                 <!-- Core Service Guarantees -->
-                <section class="mb-12">
-                    <h3 class="text-2xl font-semibold mb-6 text-gray-800 text-center">Core Service Guarantees</h3>
-                    <div class="flex justify-center flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-gray-600">
-                        <div class="flex items-center space-x-1">
-                            <i data-lucide="package" class="w-4 h-4 text-gw-gold"></i>
-                            <span class="hover:text-gw-dark transition">2-DAY METRO DELIVERY</span>
+                <section class="mb-12 border-b border-gray-300 pb-8">
+                    <h3 class="text-xl font-bold mb-6 text-gray-800 text-center uppercase tracking-wider">The GiftWell Difference</h3>
+                    <div class="flex justify-center flex-wrap gap-x-8 gap-y-4 text-sm font-medium text-gray-700">
+                        <div class="flex items-center space-x-2 p-2 rounded-lg bg-white shadow-sm border border-gray-200">
+                            <i data-lucide="package" class="w-5 h-5 text-gw-dark"></i>
+                            <span class="hover:text-gw-dark transition font-semibold">FAST METRO DELIVERY</span>
                         </div>
-                        <div class="flex items-center space-x-1">
-                            <i data-lucide="link" class="w-4 h-4 text-gw-gold"></i>
-                            <span class="hover:text-gw-dark transition">RECIPIENT-CHOICE LINKS</span>
+                        <div class="flex items-center space-x-2 p-2 rounded-lg bg-white shadow-sm border border-gray-200">
+                            <i data-lucide="link" class="w-5 h-5 text-gw-dark"></i>
+                            <span class="hover:text-gw-dark transition font-semibold">RECIPIENT-CHOICE LINKS</span>
                         </div>
-                        <div class="flex items-center space-x-1">
-                            <i data-lucide="file-text" class="w-4 h-4 text-gw-gold"></i>
-                            <span class="hover:text-gw-dark transition">GST-READY INVOICES</span>
+                        <div class="flex items-center space-x-2 p-2 rounded-lg bg-white shadow-sm border border-gray-200">
+                            <i data-lucide="file-text" class="w-5 h-5 text-gw-dark"></i>
+                            <span class="hover:text-gw-dark transition font-semibold">GST-READY INVOICES</span>
                         </div>
-                        <div class="flex items-center space-x-1">
-                            <i data-lucide="message-circle" class="w-4 h-4 text-gw-gold"></i>
-                            <span class="hover:text-gw-dark transition">WHATSAPP ORDERING</span>
+                        <div class="flex items-center space-x-2 p-2 rounded-lg bg-white shadow-sm border border-gray-200">
+                            <i data-lucide="message-circle" class="w-5 h-5 text-gw-dark"></i>
+                            <span class="hover:text-gw-dark transition font-semibold">WHATSAPP ORDERING</span>
                         </div>
                     </div>
                 </section>
                 
                 <!-- Shop by Occasion -->
                 <section class="mb-12">
-                    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Shop by Occasion (Traditional Browsing)</h3>
+                    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Shop by Occasion</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         
-                        <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-card-gold text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-gold">
-                            <div class="flex flex-col items-center">
-                                <i data-lucide="sun" class="w-6 h-6 mb-1"></i>
-                                <span class="text-sm font-bold uppercase">Diwali Celebrations</span>
-                            </div>
+                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-gold text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-gold/70" aria-label="Shop for Diwali Celebrations">
+                            <i data-lucide="sun" class="w-6 h-6 mb-1"></i>
+                            <span class="text-sm font-bold uppercase">Diwali Celebrations</span>
                         </a>
                         
-                        <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-card-navy-light text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-navy-light">
-                            <div class="flex flex-col items-center">
-                                <i data-lucide="sparkles" class="w-6 h-6 mb-1"></i>
-                                <span class="text-sm font-bold uppercase">New Year, New Beginnings</span>
-                            </div>
+                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-navy-light text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-navy-light/70" aria-label="Shop for New Year's Gifts">
+                            <i data-lucide="sparkles" class="w-6 h-6 mb-1"></i>
+                            <span class="text-sm font-bold uppercase">New Year, New Beginnings</span>
                         </a>
                         
-                        <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-card-green-dark text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-green-dark">
-                            <div class="flex flex-col items-center">
-                                <i data-lucide="trophy" class="w-6 h-6 mb-1"></i>
-                                <span class="text-sm font-bold uppercase">Corporate Year-End Gratitude</span>
-                            </div>
+                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-green-dark text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-green-dark/70" aria-label="Shop for Corporate Year-End Gratitude gifts">
+                            <i data-lucide="trophy" class="w-6 h-6 mb-1"></i>
+                            <span class="text-sm font-bold uppercase">Corporate Year-End Gratitude</span>
                         </a>
                         
-                        <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-gray-200 text-gray-700 transition transform hover:scale-[1.02] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                            <div class="flex flex-col items-center">
-                                <i data-lucide="plus" class="w-6 h-6 mb-1"></i>
-                                <span class="text-sm font-bold uppercase">View All Occasions</span>
-                            </div>
+                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-gray-200 text-gray-700 transition transform hover:scale-[1.02] border border-gray-300 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500/70" aria-label="View All Occasions">
+                            <i data-lucide="plus" class="w-6 h-6 mb-1"></i>
+                            <span class="text-sm font-bold uppercase">View All Occasions</span>
                         </a>
                     </div>
                 </section>
 
                 <!-- Shop by Category -->
-                <section class="mb-12">
+                <section>
                     <h3 class="text-2xl font-semibold mb-6 text-gray-800">Shop by Category</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         
-                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-blue-tech text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-blue-tech">
+                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-blue-tech text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-blue-tech/70" aria-label="Shop Executive Tech">
                             <i data-lucide="laptop" class="w-8 h-8 mb-2"></i>
                             <span class="text-center font-semibold text-sm">EXECUTIVE TECH</span>
                         </a>
                         
-                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-green-dark text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-green-dark">
+                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-green-dark text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-green-dark/70" aria-label="Shop Eco-Friendly & Sustainable Gifts">
                             <i data-lucide="leaf" class="w-8 h-8 mb-2"></i>
                             <span class="text-center font-semibold text-sm">ECO-FRIENDLY & SUSTAINABLE</span>
                         </a>
                         
-                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-navy-light text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-navy-light">
+                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-navy-light text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-navy-light/70" aria-label="Shop Experiences & Vouchers">
                             <i data-lucide="ticket" class="w-8 h-8 mb-2"></i>
                             <span class="text-center font-semibold text-sm">EXPERIENCES & VOUCHERS</span>
                         </a>
                         
-                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-blue-tech text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-blue-tech">
+                        <a href="#" class="flex flex-col items-center p-6 rounded-xl shadow-card-lg bg-card-blue-tech text-white h-36 justify-center transition hover:bg-gw-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-blue-tech/70" aria-label="Shop Lifestyle & Wellness Gifts">
                             <i data-lucide="heart-handshake" class="w-8 h-8 mb-2"></i>
                             <span class="text-center font-semibold text-sm">LIFESTYLE & WELLNESS</span>
-                        </div>
                         </a>
                     </div>
                 </section>
@@ -422,21 +526,73 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gw-darker-footer py-6">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-gw-text text-sm">
+    <footer class="bg-gw-darker-footer pt-10 pb-4 mt-auto">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             
-            <nav class="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 mb-4 md:mb-0">
-                <a href="#" class="hover:text-gw-gold transition duration-200">HELP</a>
-                <a href="#" class="hover:text-gw-gold transition duration-200">RETURNS</a>
-                <a href="#" class="hover:text-gw-gold transition duration-200">CORPORATE</a>
-                <a href="#" class="hover:text-gw-gold transition duration-200">SUSTAINABILITY</a>
-                <a href="#" class="hover:text-gw-gold transition duration-200">COMPLIANCE</a>
-            </nav>
+            <!-- Main Footer Grid (3-column layout on desktop) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-gw-dark/50 text-gw-text">
+                
+                <!-- Column 1: Brand & Description -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-3 justify-center md:justify-start">
+                        <!-- Logo/Icon -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 8C16 10.2091 14.2091 12 12 12C9.79086 12 8 10.2091 8 8C8 5.79086 9.79086 4 12 4C14.2091 4 16 5.79086 16 8Z" fill="#D4AF37" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 14C12 14 10 17 12 20C14 17 12 14 12 14Z" fill="#D4AF37" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="text-lg font-extrabold text-gw-gold uppercase tracking-wider">GiftWell</span>
+                    </div>
+                    <p class="text-xs text-gray-400 max-w-xs mx-auto md:mx-0 text-center md:text-left">The AI-powered platform for meaningful corporate gifting, specializing in bulk ordering, customization, and global delivery solutions.</p>
+                </div>
 
-            
-            <p class="text-xs text-gray-500">
-                © 2024 GIFTWELL. All rights reserved.
-            </p>
+                <!-- Column 2: Navigation Links -->
+                <div class="grid grid-cols-2 gap-4 text-sm text-center md:text-left">
+                    <div class="space-y-2">
+                        <h4 class="font-bold mb-1 text-gw-gold">Gifting</h4>
+                        <a href="#" class="block hover:text-gw-gold transition duration-200 text-gray-400">Our Catalog</a>
+                        <a href="#" class="block hover:text-gw-gold transition duration-200 text-gray-400">Bulk Orders</a>
+                        <a href="#" class="block hover:text-gw-gold transition duration-200 text-gray-400">Occasions</a>
+                        <a href="#" class="block hover:text-gw-gold transition duration-200 text-gray-400">Custom Boxes</a>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="font-bold mb-1 text-gw-gold">Company</h4>
+                        <a href="#" class="block hover:text-gw-gold transition duration-200 text-gray-400">About Us</a>
+                        <a href="#" class="block hover:text-gw-gold transition duration-200 text-gray-400">Careers</a>
+                        <a href="#" class="block hover:text-gw-gold transition duration-200 text-gray-400">Sustainability</a>
+                        <a href="#" class="block hover:text-gw-gold transition duration-200 text-gray-400">B2B Portal</a>
+                    </div>
+                </div>
+
+                <!-- Column 3: Contact & Social -->
+                <div class="text-center md:text-left">
+                    <h4 class="font-bold mb-3 text-gw-gold">Connect</h4>
+                    <div class="space-y-2 text-sm mb-4">
+                         <p class="text-gray-400">support@giftwell.com</p>
+                         <p class="text-gray-400">+1 (800) 555-GIFT</p>
+                    </div>
+                    <div class="flex space-x-4 justify-center md:justify-start">
+                        <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200" aria-label="Follow us on LinkedIn"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200" aria-label="Follow us on Twitter"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gw-text hover:text-gw-gold transition duration-200" aria-label="Follow us on Instagram"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright Row -->
+            <div class="py-4 text-center">
+                <!-- Links from the original footer, kept in a visible row -->
+                <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-2 font-medium text-xs">
+                    <a href="#" class="text-gray-500 hover:text-gw-gold transition duration-200">HELP CENTER</a>
+                    <a href="#" class="text-gray-500 hover:text-gw-gold transition duration-200">RETURNS POLICY</a>
+                    <a href="#" class="text-gray-500 hover:text-gw-gold transition duration-200">COMPLIANCE</a>
+                    <a href="#" class="text-gray-500 hover:text-gw-gold transition duration-200">PRIVACY POLICY</a>
+                </nav>
+                <p class="text-xs text-gray-500 mt-2">
+                    © 2024 GIFTWELL. All rights reserved. The AI Concierge is a trademark of GiftWell Corp.
+                </p>
+            </div>
         </div>
     </footer>
 
