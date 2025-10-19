@@ -217,77 +217,6 @@
             `;
         }
 
-        /**
-         * Simulates the AI search and updates the DOM.
-         * @param {string} query - The user's search query.
-         */
-        function simulateAISearch(query) {
-            const chatHistory = document.getElementById('chat-history');
-            const aiResultsContainer = document.getElementById('ai-results-container');
-            const chatInput = document.getElementById('chat-input');
-            
-            // Check if user is trying to customize an existing item (simple mock state)
-            const customizing = chatInput.placeholder.includes('Customizing');
-            
-            // 1. Add user query to history
-            const userPart = document.createElement('div');
-            userPart.className = 'text-right mb-4';
-            userPart.innerHTML = `<span class="inline-block bg-gw-gold text-gw-dark px-4 py-2 rounded-xl rounded-br-none shadow-lg max-w-[80%]">${query}</span>`;
-            chatHistory.appendChild(userPart);
-
-            // 2. Clear input and show loading
-            chatInput.value = '';
-            
-            if (!customizing) {
-                // Hide initial cards
-                const initialGrid = document.getElementById('ai-results-grid-initial');
-                if (initialGrid) initialGrid.classList.add('hidden');
-
-                // Show loading for new search
-                aiResultsContainer.innerHTML = `
-                    <div class="py-8 flex justify-center items-center text-gw-gold">
-                        <svg class="animate-spin -ml-1 mr-3 h-8 w-8 text-gw-gold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span class="text-white text-lg font-medium">Curating 4 optimal gifts...</span>
-                    </div>
-                `;
-            }
-            
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-
-            // 3. Simulate API delay and show results/response 
-            setTimeout(() => {
-                if (customizing) {
-                    // Customization response
-                    const aiPart = document.createElement('div');
-                    aiPart.className = 'text-left mb-4';
-                    aiPart.innerHTML = `<span class="inline-block bg-gw-dark text-gw-text px-4 py-2 rounded-xl rounded-tl-none shadow-lg max-w-[80%]">Understood. Your custom item is ready. Ready to proceed to bulk ordering?</span>`;
-                    chatHistory.appendChild(aiPart);
-                    chatInput.placeholder = 'Ready for bulk order or need further assistance?';
-
-                    // Clear results container after customization
-                    aiResultsContainer.innerHTML = '';
-                } else {
-                    // New search results response 
-                    
-                    aiResultsContainer.innerHTML = generateResultCards();
-                    
-                    // Add AI response to history
-                    const aiPart = document.createElement('div');
-                    aiPart.className = 'text-left mb-4';
-                    aiPart.innerHTML = `<span class="inline-block bg-gw-dark text-gw-text px-4 py-2 rounded-xl rounded-tl-none shadow-lg max-w-[80%]">Based on your query, here are 4 perfect options. Click on one to customize, or refine your search.</span>`;
-                    chatHistory.appendChild(aiPart);
-                    
-                    // Reset placeholder for next search
-                    chatInput.placeholder = placeholders[placeholderIndex];
-                }
-                
-                chatHistory.scrollTop = chatHistory.scrollHeight;
-            }, 1500); 
-        }
-
         // Event listener for the input field to allow submission via Enter key
         window.onload = function() {
             const chatInput = document.getElementById('chat-input');
@@ -359,47 +288,43 @@
         <div id="ai-concierge-section" class="bg-gw-dark-secondary py-12 md:py-16">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <!-- Layout: Single Full-Width Column - No floating elements, no empty gaps -->
+                <!-- Layout: Single Full-Width Column -->
                 <section class="space-y-6">
                     
-                    <!-- 1. Hero Text -->
+                    <!-- 1. Hero Text (UPDATED HEADLINE) -->
                     <div class="text-left mb-4">
                         <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-3 tracking-tight">
-                            The Future of Gifting: <span class="text-gw-gold">AI-Powered Curation.</span>
+                            Your <span class="text-gw-gold">AI Gifting Concierge.</span>
                         </h2>
                         <p class="text-gw-text text-lg font-light max-w-xl">
                             Describe your goals, and we'll instantly generate custom, buildable gift boxes to match.
                         </p>
                     </div>
 
-                    <!-- 2. Trust Metrics (REMOVED as requested) -->
-                    <!-- <div class="grid grid-cols-3 gap-3 w-full max-w-lg mb-6">...</div> -->
-
-
-                    <!-- 3. AI Results Container (Static/Dynamic Results) -->
+                    <!-- 2. AI Results Container (Static/Dynamic Results) -->
                     <div id="ai-results-container" class="transition duration-500 ease-in-out">
                         <!-- HARD-CODED INITIAL SAMPLES -->
                         <div id="ai-results-grid-initial" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pb-4 pt-2">
                             
-                            <!-- Card 1: Tech Essentials Kit (Gold background) -->
-                            <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Tech Essentials Kit')" tabindex="0" role="button" aria-label="Select Tech Essentials Kit">
-                                <img src="https://images.unsplash.com/photo-1542435503-921473aa8b7a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tech Essentials Kit" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/1A2C38/D4AF37?text=Tech+Kit';">
+                            <!-- Card 1: Tech Essentials Kit (COLOR CHANGED to card-navy-light) -->
+                            <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-card-navy-light" onclick="selectGiftOption('Tech Essentials Kit')" tabindex="0" role="button" aria-label="Select Tech Essentials Kit">
+                                <img src="https://images.unsplash.com/photo-1542435503-921473aa8b7a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tech Essentials Kit" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/3A4B62/D4AF37?text=Tech+Kit';">
                                 <p class="gift-card-title text-sm md:text-base text-center">Tech Essentials Kit</p>
                             </div>
                             
-                            <!-- Card 2: Desk Zen Set -->
+                            <!-- Card 2: Desk Zen Set (Original gw-dark background) -->
                             <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Desk Zen Set')" tabindex="0" role="button" aria-label="Select Desk Zen Set">
                                 <img src="https://images.unsplash.com/photo-1577977465355-6b5c3d2f928a?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Desk Zen Set" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/3A4B62/D4AF37?text=Desk+Zen';">
                                 <p class="gift-card-title text-sm md:text-base text-center">Desk Zen Set</p>
                             </div>
                             
-                            <!-- Card 3: Travel Smart Pack -->
+                            <!-- Card 3: Travel Smart Pack (Original gw-dark background) -->
                             <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Travel Smart Pack')" tabindex="0" role="button" aria-label="Select Travel Smart Pack">
                                 <img src="https://images.unsplash.com/photo-1587327429158-b7a42a344933?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Travel Smart Pack" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/5C7A5C/D4AF37?text=Travel+Pack';">
                                 <p class="gift-card-title text-sm md:text-base text-center">Travel Smart Pack</p>
                             </div>
                             
-                            <!-- Card 4: Coffee & Code Box -->
+                            <!-- Card 4: Coffee & Code Box (Original gw-dark background) -->
                             <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Coffee & Code Box')" tabindex="0" role="button" aria-label="Select Coffee & Code Box">
                                 <img src="https://images.unsplash.com/photo-1517402685651-7f97b7b15a6b?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Coffee & Code Box" class="w-full h-auto rounded-lg mb-3 object-cover aspect-square border border-gw-darker-footer/50" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/180x180/A77F3C/D4AF37?text=Coffee+Code';">
                                 <p class="gift-card-title text-sm md:text-base text-center">Coffee & Code Box</p>
@@ -408,7 +333,7 @@
                         <!-- END HARD-CODED INITIAL SAMPLES -->
                     </div>
 
-                    <!-- 4. Chat Interface (Spans full width) -->
+                    <!-- 3. Chat Interface (Spans full width) -->
                     <div class="bg-gw-dark rounded-xl shadow-ai-chat space-y-4 p-4 md:p-6 border border-gw-gold/20">
                         
                         <!-- Static Greeting Header -->
@@ -438,124 +363,6 @@
                             <span class="text-xs font-medium text-gw-text bg-gw-dark-secondary px-3 py-1 rounded-full cursor-pointer hover:bg-gw-gold/30 transition border border-gw-dark/50" onclick="document.getElementById('chat-input').value = 'Need delivery by next month'">TIMELINE</span>
                         </div>
                     </div>
-                </section>
-                <!-- END NEW LAYOUT -->
-            </div>
-        </div>
-        
-        <!-- Trusted By Section (Social Proof) -->
-        <section class="bg-gw-dark shadow-inner py-8">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-sm font-medium text-gray-400 uppercase tracking-widest mb-4">Trusted By Leading Global Brands</p>
-                <div class="flex flex-wrap justify-center items-center gap-6 md:gap-12">
-                    <i data-lucide="building-2" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
-                    <i data-lucide="briefcase" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
-                    <i data-lucide="code" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
-                    <i data-lucide="globe" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
-                    <i data-lucide="factory" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300 hidden sm:block" aria-label="Mock Company Logo"></i>
-                    <i data-lucide="rocket" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300 hidden lg:block" aria-label="Mock Company Logo"></i>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- Lower Body Sections -->
-        <div class="bg-gray-100 flex-grow">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
-
-                <!-- Core Service Guarantees -->
-                <section class="mb-12 border-b border-gray-300 pb-8">
-                    <h3 class="text-xl font-bold mb-6 text-gray-800 text-center uppercase tracking-wider">The GiftWell Difference</h3>
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 text-sm font-medium">
-                        
-                        <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
-                            <i data-lucide="package" class="w-5 h-5 text-gw-dark"></i>
-                            <span class="font-semibold text-xs md:text-sm text-gray-900">Guaranteed Express Metro Shipping</span>
-                        </div>
-                        <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
-                            <i data-lucide="link" class="w-5 h-5 text-gw-dark"></i>
-                            <span class="font-semibold text-xs md:text-sm text-gray-900">Allow Recipients to Choose</span>
-                        </div>
-                        <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
-                            <i data-lucide="file-text" class="w-5 h-5 text-gw-dark"></i>
-                            <span class="font-semibold text-xs md:text-sm text-gray-900">Full Tax-Ready Invoicing</span>
-                        </div>
-                        <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
-                            <i data-lucide="message-circle" class="w-5 h-5 text-gw-dark"></i>
-                            <span class="font-semibold text-xs md:text-sm text-gray-900">Direct Order Management via WhatsApp</span>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Shop by Occasion -->
-                <section class="mb-12">
-                    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Shop by Occasion</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        
-                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-gold text-white transition transform hover:-translate-y-1 hover:shadow-2xl duration-300">
-                            <i data-lucide="party-popper" class="w-6 h-6 mb-1"></i>
-                            <span class="text-sm font-bold">Festive & Holidays</span>
-                        </a>
-
-                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-navy-light text-white transition transform hover:-translate-y-1 hover:shadow-2xl duration-300">
-                            <i data-lucide="briefcase" class="w-6 h-6 mb-1"></i>
-                            <span class="text-sm font-bold">Client Appreciation</span>
-                        </a>
-                        
-                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-green-dark text-white transition transform hover:-translate-y-1 hover:shadow-2xl duration-300">
-                            <i data-lucide="trending-up" class="w-6 h-6 mb-1"></i>
-                            <span class="text-sm font-bold">Employee Milestone</span>
-                        </a>
-
-                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-blue-tech text-white transition transform hover:-translate-y-1 hover:shadow-2xl duration-300">
-                            <i data-lucide="rocket" class="w-6 h-6 mb-1"></i>
-                            <span class="text-sm font-bold">New Hire Kits</span>
-                        </a>
-                    </div>
-                </section>
-
-                <!-- How It Works Section (The 3-Step Process) -->
-                <section class="mb-12 pt-6">
-                    <h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Your 3-Step Gifting Journey</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                        
-                        <!-- Step 1 -->
-                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-gw-gold/80 transition transform hover:scale-[1.02] duration-300">
-                            <div class="inline-block bg-gw-gold/10 text-gw-gold p-3 rounded-full mb-4">
-                                <i data-lucide="search" class="w-8 h-8"></i>
-                            </div>
-                            <p class="text-xl font-bold text-gray-900 mb-2">1. AI Curate</p>
-                            <p class="text-gray-600 text-sm">Use the AI concierge to define budget, audience, and theme. Get instant, personalized box recommendations.</p>
-                        </div>
-                        
-                        <!-- Step 2 -->
-                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-gw-gold/80 transition transform hover:scale-[1.02] duration-300">
-                            <div class="inline-block bg-gw-gold/10 text-gw-gold p-3 rounded-full mb-4">
-                                <i data-lucide="layout-grid" class="w-8 h-8"></i>
-                            </div>
-                            <p class="text-xl font-bold text-gray-900 mb-2">2. Customize & Proof</p>
-                            <p class="text-gray-600 text-sm">Easily add corporate branding, custom notes, and choose final packaging options within our portal.</p>
-                        </div>
-                        
-                        <!-- Step 3 -->
-                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-gw-gold/80 transition transform hover:scale-[1.02] duration-300">
-                            <div class="inline-block bg-gw-gold/10 text-gw-gold p-3 rounded-full mb-4">
-                                <i data-lucide="send" class="w-8 h-8"></i>
-                            </div>
-                            <p class="text-xl font-bold text-gray-900 mb-2">3. Fulfill & Track</p>
-                            <p class="text-gray-600 text-sm">Enjoy seamless bulk fulfillment, pan-India delivery, and real-time tracking through your dashboard.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Final CTA (Scrolls up to the AI section) -->
-                    <div class="text-center mt-10">
-                        <a href="#ai-concierge-section" class="inline-flex items-center justify-center bg-gw-gold text-gw-dark px-10 py-4 text-lg font-extrabold rounded-xl shadow-xl hover:bg-opacity-90 transition duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold">
-                            Start Curating Your Gifts Now
-                            <i data-lucide="chevron-up" class="w-5 h-5 ml-2"></i>
-                        </a>
-                    </div>
-
                 </section>
             </div>
         </div>
