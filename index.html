@@ -105,10 +105,6 @@
             text-align: center; /* Center align for consistency */
         }
         
-        .gift-card-desc {
-            font-size: 0.875rem; 
-            color: #9CA3AF; 
-        }
     </style>
     <script>
         // Custom Tailwind configuration for the premium dark/gold theme
@@ -245,8 +241,9 @@
                 { id: 8, name: "Artisanal Snack Box", image: `https://images.unsplash.com/photo-1601675760548-b2a3b98453cc?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
             ];
 
+            // NOTE: Changed from md:grid-cols-4 to grid-cols-2 to fit better in the new 50% column width
             return `
-                <div id="ai-results-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pb-4 pt-2 fade-in-results">
+                <div id="ai-results-grid" class="grid grid-cols-2 gap-4 md:gap-6 pb-4 pt-2 fade-in-results">
                     ${dynamicResults.map(gift => `
                         <div 
                             class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70"
@@ -407,10 +404,12 @@
         <div id="ai-concierge-section" class="bg-gw-dark-secondary py-12 md:py-16">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <!-- NOTE: Changed to lg:grid-cols-2 for a symmetrical 50/50 layout on large screens -->
+                <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                     
                     <!-- Left Column: AI Chat and Results (Combined Interface) -->
-                    <div class="lg:col-span-2 space-y-6">
+                    <!-- NOTE: Removed lg:col-span-2, now takes 50% width -->
+                    <div class="space-y-6">
                         
                         <!-- Hero Text -->
                         <div class="text-left mb-4">
@@ -425,7 +424,8 @@
                         <!-- AI Results Container (Static/Dynamic Results) -->
                         <div id="ai-results-container" class="transition duration-500 ease-in-out">
                             <!-- HARD-CODED INITIAL SAMPLES -->
-                            <div id="ai-results-grid-initial" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pb-4 pt-2">
+                            <!-- NOTE: Changed from md:grid-cols-4 to grid-cols-2 to fit the narrower 50% column gracefully -->
+                            <div id="ai-results-grid-initial" class="grid grid-cols-2 gap-4 md:gap-6 pb-4 pt-2">
                                 
                                 <!-- Card 1: Tech Essentials Kit (Gold background) -->
                                 <div class="gift-card rounded-xl shadow-xl border border-gw-gold/30 p-4 cursor-pointer transform transition hover:scale-[1.03] focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold/70 bg-gw-dark" onclick="selectGiftOption('Tech Essentials Kit')" tabindex="0" role="button" aria-label="Select Tech Essentials Kit">
@@ -491,9 +491,11 @@
                     </div>
 
                     <!-- Right Column: Metrics and Visual -->
-                    <div class="lg:col-span-1 flex flex-col items-center justify-start gap-8 mt-6 lg:mt-0">
+                    <!-- NOTE: Removed lg:col-span-1, now takes 50% width -->
+                    <div class="flex flex-col items-center justify-start gap-8 mt-6 lg:mt-0">
                         
                         <!-- Trust Metrics (Unchanged) -->
+                        <!-- Metrics now occupy 1/2 the screen width, improving visibility -->
                         <div class="grid grid-cols-3 gap-3 w-full">
                             
                             <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
