@@ -18,6 +18,23 @@
         .metric-shadow {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 0 10px rgba(212, 175, 55, 0.4);
         }
+        
+        /* CSS for the Bot Pulse Animation */
+        @keyframes pulse-gold {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 8px rgba(212, 175, 55, 0);
+            }
+        }
+
+        .bot-pulse {
+            animation: pulse-gold 1.5s infinite;
+        }
+
     </style>
     <script>
         // Custom Tailwind configuration to match the mockup's color palette and depth
@@ -79,27 +96,37 @@
     <!-- Main Content Area -->
     <main>
         <!-- FIRST SECTION (Dark): AI Concierge, Build-A-Box & Metrics -->
-        <div class="bg-gw-dark-secondary py-12">
+        <div class="bg-gw-dark-secondary py-16">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <!-- AI & Metrics Header -->
-                <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center pb-8">
+                <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start pb-10">
                     
                     <!-- Conversational AI Search & Tags -->
                     <div class="lg:col-span-2 space-y-4">
-                        <div class="flex items-center space-x-3">
-                            <!-- AI Concierge Icon -->
+                        
+                        <!-- NEW: Value Proposition & Intro -->
+                        <div class="text-left mb-6">
+                            <h2 class="text-4xl font-extrabold text-white mb-2 tracking-tight">
+                                Revolutionize Gifting: Your <span class="text-gw-gold">AI Concierge</span> Awaits.
+                            </h2>
+                            <p class="text-gw-text text-lg font-light">
+                                Describe your recipients, budget, and goals—we'll instantly curate custom, buildable gift boxes.
+                            </p>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3 mb-4">
+                            <!-- AI Concierge Icon/Avatar -->
                             <div class="w-10 h-10 rounded-full bg-pink-300 flex items-center justify-center shadow-lg">
                                 <i data-lucide="user" class="w-5 h-5 text-gw-dark"></i>
                             </div>
-                            <h2 class="text-2xl text-white font-bold">Featured Kits: AI Gift Concierge</h2>
+                            <p class="text-xl text-white font-semibold">Start Curating Your Perfect Gift</p>
                         </div>
-                        <p class="text-gw-text text-lg font-light">Conversational AI Search</p>
                         
                         <!-- Search Box (Gold accent, defined area) -->
-                        <div class="relative flex items-center border border-gw-gold rounded-xl p-1 bg-gw-dark">
-                            <input type="text" placeholder="Describe your perfect gift..." class="w-full bg-transparent text-gw-text p-3 pr-16 rounded-l-xl focus:outline-none placeholder-gray-500">
-                            <div class="w-12 h-12 bg-gw-gold rounded-lg flex items-center justify-center shadow-xl cursor-pointer hover:opacity-90 transition">
+                        <div class="relative flex items-center border border-gw-gold rounded-xl p-1 bg-gw-dark shadow-2xl">
+                            <input type="text" placeholder="Example: '20 remote sales team members, $50 budget, eco-friendly, needs to ship next week'" class="w-full bg-transparent text-gw-text p-3 pr-16 rounded-l-xl focus:outline-none placeholder-gray-500 text-sm">
+                            <div class="w-12 h-12 bg-gw-gold rounded-lg flex items-center justify-center shadow-xl cursor-pointer hover:opacity-90 transition bot-pulse">
                                 <i data-lucide="bot" class="w-6 h-6 text-gw-dark"></i>
                             </div>
                         </div>
@@ -133,10 +160,11 @@
                     </div>
                 </section>
                 
-                <!-- Product Recommendations Based on Persona -->
+                <!-- AI-Generated Gift Profiles -->
                 <section class="pt-8 border-t border-gray-700 mt-8 text-gw-text">
+                    <h3 class="text-2xl font-bold mb-6 text-white">AI-Generated Gift Profiles</h3>
                     <p class="text-lg mb-8 font-light italic">
-                        Recommended "Build-a-Box" concepts based on common corporate profiles...
+                        The AI leverages billions of data points to generate hyper-specific, successful gift concepts based on current trends and recipient demographics.
                     </p>
                     
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -178,9 +206,9 @@
         <div class="bg-gray-100">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-                <!-- Feature Bar (Micro-Pillars of Trust) - Moved up for immediate trust/service messaging -->
+                <!-- Feature Bar (Micro-Pillars of Trust) - Now positioned as core service promises -->
                 <section class="mb-12">
-                    <h3 class="text-xl font-semibold mb-6 text-gray-800 text-center">Core Service Pillars</h3>
+                    <h3 class="text-2xl font-semibold mb-6 text-gray-800 text-center">Core Service Guarantees</h3>
                     <div class="flex justify-center flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-gray-600">
                         <div class="flex items-center space-x-1">
                             <i data-lucide="package" class="w-4 h-4 text-gw-gold"></i>
@@ -203,7 +231,7 @@
                 
                 <!-- Occasion Recommendations Section -->
                 <section class="mb-12">
-                    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Shop by Occasion</h3>
+                    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Shop by Occasion (Traditional Browsing)</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <!-- Occasion Card 1: Diwali (Stronger shadow for lift) -->
                         <a href="#" class="flex items-center justify-center p-6 text-center h-28 rounded-xl shadow-card-lg bg-card-gold text-white transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-card-gold">
