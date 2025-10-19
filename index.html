@@ -32,10 +32,6 @@
             transform: translateY(-2px);
         }
         
-        /* CSS for the Bot Pulse Animation - REMOVED */
-        
-        /* Enhanced AI Graphic background - REMOVED */
-        
         /* Specific styling for the new gift cards */
         .gift-card {
             background-color: #1A2C38; /* gw-dark-secondary */
@@ -200,7 +196,7 @@
                 { id: 8, name: "Artisanal Snack Box", image: `https://images.unsplash.com/photo-1601675760548-b2a3b98453cc?q=80&w=320&h=320&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D` },
             ];
 
-            // Reverted to 4 columns to fill the full container width nicely
+            // Retained 4 columns for full container width
             return `
                 <div id="ai-results-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pb-4 pt-2 fade-in-results">
                     ${dynamicResults.map(gift => `
@@ -363,7 +359,7 @@
         <div id="ai-concierge-section" class="bg-gw-dark-secondary py-12 md:py-16">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <!-- NEW LAYOUT: Single Full-Width Column (resolved alignment issue) -->
+                <!-- Layout: Single Full-Width Column - No floating elements, no empty gaps -->
                 <section class="space-y-6">
                     
                     <!-- 1. Hero Text -->
@@ -376,24 +372,8 @@
                         </p>
                     </div>
 
-                    <!-- 2. Trust Metrics (Now placed directly under Hero text) -->
-                    <div class="grid grid-cols-3 gap-3 w-full max-w-lg mb-6">
-                        
-                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
-                            <i data-lucide="handshake" class="w-7 h-7 md:w-8 md:h-8 text-gw-gold mb-1"></i>
-                            <span class="text-gw-text text-xs font-semibold uppercase mt-1 text-center">Client Base</span>
-                        </div>
-                        
-                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
-                            <p class="text-2xl font-extrabold text-gw-gold">4.8/5</p>
-                            <span class="text-gw-text text-xs font-light uppercase text-center">Client CSAT</span>
-                        </div>
-                        
-                        <div class="p-3 bg-gw-dark rounded-xl flex flex-col items-center justify-center h-28 metric-shadow">
-                            <p class="text-2xl font-extrabold text-gw-gold">98%</p>
-                            <span class="text-gw-text text-xs font-light uppercase text-center">On-Time</span>
-                        </div>
-                    </div>
+                    <!-- 2. Trust Metrics (REMOVED as requested) -->
+                    <!-- <div class="grid grid-cols-3 gap-3 w-full max-w-lg mb-6">...</div> -->
 
 
                     <!-- 3. AI Results Container (Static/Dynamic Results) -->
@@ -428,7 +408,7 @@
                         <!-- END HARD-CODED INITIAL SAMPLES -->
                     </div>
 
-                    <!-- 4. Chat Interface (Now spans full width, aligning with cards above) -->
+                    <!-- 4. Chat Interface (Spans full width) -->
                     <div class="bg-gw-dark rounded-xl shadow-ai-chat space-y-4 p-4 md:p-6 border border-gw-gold/20">
                         
                         <!-- Static Greeting Header -->
@@ -460,6 +440,123 @@
                     </div>
                 </section>
                 <!-- END NEW LAYOUT -->
+            </div>
+        </div>
+        
+        <!-- Trusted By Section (Social Proof) -->
+        <section class="bg-gw-dark shadow-inner py-8">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sm font-medium text-gray-400 uppercase tracking-widest mb-4">Trusted By Leading Global Brands</p>
+                <div class="flex flex-wrap justify-center items-center gap-6 md:gap-12">
+                    <i data-lucide="building-2" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
+                    <i data-lucide="briefcase" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
+                    <i data-lucide="code" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
+                    <i data-lucide="globe" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300" aria-label="Mock Company Logo"></i>
+                    <i data-lucide="factory" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300 hidden sm:block" aria-label="Mock Company Logo"></i>
+                    <i data-lucide="rocket" class="w-8 h-8 text-gw-text opacity-70 hover:opacity-100 transition duration-300 hidden lg:block" aria-label="Mock Company Logo"></i>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Lower Body Sections -->
+        <div class="bg-gray-100 flex-grow">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+
+                <!-- Core Service Guarantees -->
+                <section class="mb-12 border-b border-gray-300 pb-8">
+                    <h3 class="text-xl font-bold mb-6 text-gray-800 text-center uppercase tracking-wider">The GiftWell Difference</h3>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 text-sm font-medium">
+                        
+                        <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
+                            <i data-lucide="package" class="w-5 h-5 text-gw-dark"></i>
+                            <span class="font-semibold text-xs md:text-sm text-gray-900">Guaranteed Express Metro Shipping</span>
+                        </div>
+                        <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
+                            <i data-lucide="link" class="w-5 h-5 text-gw-dark"></i>
+                            <span class="font-semibold text-xs md:text-sm text-gray-900">Allow Recipients to Choose</span>
+                        </div>
+                        <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
+                            <i data-lucide="file-text" class="w-5 h-5 text-gw-dark"></i>
+                            <span class="font-semibold text-xs md:text-sm text-gray-900">Full Tax-Ready Invoicing</span>
+                        </div>
+                        <div class="flex items-center space-x-2 p-3 rounded-xl bg-white shadow-md border border-gray-200 transition hover:border-gw-gold">
+                            <i data-lucide="message-circle" class="w-5 h-5 text-gw-dark"></i>
+                            <span class="font-semibold text-xs md:text-sm text-gray-900">Direct Order Management via WhatsApp</span>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Shop by Occasion -->
+                <section class="mb-12">
+                    <h3 class="text-2xl font-semibold mb-6 text-gray-800">Shop by Occasion</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        
+                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-gold text-white transition transform hover:-translate-y-1 hover:shadow-2xl duration-300">
+                            <i data-lucide="party-popper" class="w-6 h-6 mb-1"></i>
+                            <span class="text-sm font-bold">Festive & Holidays</span>
+                        </a>
+
+                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-navy-light text-white transition transform hover:-translate-y-1 hover:shadow-2xl duration-300">
+                            <i data-lucide="briefcase" class="w-6 h-6 mb-1"></i>
+                            <span class="text-sm font-bold">Client Appreciation</span>
+                        </a>
+                        
+                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-green-dark text-white transition transform hover:-translate-y-1 hover:shadow-2xl duration-300">
+                            <i data-lucide="trending-up" class="w-6 h-6 mb-1"></i>
+                            <span class="text-sm font-bold">Employee Milestone</span>
+                        </a>
+
+                        <a href="#" class="flex flex-col items-center justify-center p-4 text-center h-28 rounded-xl shadow-card-lg bg-card-blue-tech text-white transition transform hover:-translate-y-1 hover:shadow-2xl duration-300">
+                            <i data-lucide="rocket" class="w-6 h-6 mb-1"></i>
+                            <span class="text-sm font-bold">New Hire Kits</span>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- How It Works Section (The 3-Step Process) -->
+                <section class="mb-12 pt-6">
+                    <h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Your 3-Step Gifting Journey</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        
+                        <!-- Step 1 -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-gw-gold/80 transition transform hover:scale-[1.02] duration-300">
+                            <div class="inline-block bg-gw-gold/10 text-gw-gold p-3 rounded-full mb-4">
+                                <i data-lucide="search" class="w-8 h-8"></i>
+                            </div>
+                            <p class="text-xl font-bold text-gray-900 mb-2">1. AI Curate</p>
+                            <p class="text-gray-600 text-sm">Use the AI concierge to define budget, audience, and theme. Get instant, personalized box recommendations.</p>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-gw-gold/80 transition transform hover:scale-[1.02] duration-300">
+                            <div class="inline-block bg-gw-gold/10 text-gw-gold p-3 rounded-full mb-4">
+                                <i data-lucide="layout-grid" class="w-8 h-8"></i>
+                            </div>
+                            <p class="text-xl font-bold text-gray-900 mb-2">2. Customize & Proof</p>
+                            <p class="text-gray-600 text-sm">Easily add corporate branding, custom notes, and choose final packaging options within our portal.</p>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-gw-gold/80 transition transform hover:scale-[1.02] duration-300">
+                            <div class="inline-block bg-gw-gold/10 text-gw-gold p-3 rounded-full mb-4">
+                                <i data-lucide="send" class="w-8 h-8"></i>
+                            </div>
+                            <p class="text-xl font-bold text-gray-900 mb-2">3. Fulfill & Track</p>
+                            <p class="text-gray-600 text-sm">Enjoy seamless bulk fulfillment, pan-India delivery, and real-time tracking through your dashboard.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Final CTA (Scrolls up to the AI section) -->
+                    <div class="text-center mt-10">
+                        <a href="#ai-concierge-section" class="inline-flex items-center justify-center bg-gw-gold text-gw-dark px-10 py-4 text-lg font-extrabold rounded-xl shadow-xl hover:bg-opacity-90 transition duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-gw-gold">
+                            Start Curating Your Gifts Now
+                            <i data-lucide="chevron-up" class="w-5 h-5 ml-2"></i>
+                        </a>
+                    </div>
+
+                </section>
             </div>
         </div>
         
